@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="ErrMsgMgmtDBDAOErrMsgVOCSQL">
+			<desc><![CDATA[Create the message
+   ]]></desc>
+			<sql><![CDATA[
+INSERT INTO com_err_msg (                                             
+ err_msg_cd                                        ,                   
+ lang_tp_cd                                        ,  
+ err_lvl_cd                                         ,                   
+ err_tp_cd                                         ,                   
+ err_msg                                           ,                   
+ err_desc                                          ,                   
+ cre_usr_id                                        ,                   
+ cre_dt                                            ,                   
+ upd_usr_id                                        ,                   
+ upd_dt                                                                
+  ) VALUES (                                                           
+ @[err_msg_cd]                                                 ,                   
+ 'ENG'                                                 ,         
+ @[err_lvl_cd]                                                 ,                
+ @[err_tp_cd]                                                 ,                   
+ @[err_msg]                                                 ,                   
+ @[err_desc]                                                 ,                   
+ @[cre_usr_id]                                                 ,                   
+ sysdate                                           ,                   
+ 'Testing'                                               ,                   
+ sysdate                                                               
+ )			]]></sql>
+			<params>
+				<param name="err_msg_cd" type="12" value="" out="N"/>
+				<param name="err_lvl_cd" type="12" value="" out="N"/>
+				<param name="err_tp_cd" type="12" value="" out="N"/>
+				<param name="err_msg" type="12" value="" out="N"/>
+				<param name="err_desc" type="12" value="" out="N"/>
+				<param name="cre_usr_id" type="12" value="" out="N"/>
+			</params>
+		</query>
+	</querys>
+</sqls>

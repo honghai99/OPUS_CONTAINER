@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="ErrMsgMgmtDBDAOErrMsgVODSQL">
+			<desc><![CDATA[   ]]></desc>
+			<sql><![CDATA[
+DELETE FROM  com_err_msg
+WHERE err_msg_cd = @[err_msg_cd]
+AND   lang_tp_cd = 'ENG'			]]></sql>
+			<params>
+				<param name="err_msg_cd" type="12" value="" out="N"/>
+			</params>
+		</query>
+	</querys>
+</sqls>

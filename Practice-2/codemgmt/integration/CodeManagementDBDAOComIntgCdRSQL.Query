@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="CodeManagementDBDAOComIntgCdRSQL">
+			<desc><![CDATA[CodeManagementDBDAOComIntgCdRSQL]]></desc>
+			<sql><![CDATA[
+SELECT
+OWNR_SUB_SYS_CD,
+INTG_CD_ID,
+INTG_CD_NM,
+INTG_CD_LEN,
+INTG_CD_TP_CD,
+MNG_TBL_NM,
+INTG_CD_DESC,
+INTG_CD_USE_FLG,
+CRE_USR_ID,
+CRE_DT,
+UPD_USR_ID,
+UPD_DT
+FROM COM_INTG_CD
+WHERE 1=1
+
+#if (${codeVal} != '')
+AND UPPER(INTG_CD_ID) LIKE '%'||UPPER(@[codeVal])||'%'
+#end
+
+#if (${subsystem} != '')
+AND UPPER(OWNR_SUB_SYS_CD) LIKE '%'||UPPER(@[subsystem])||'%'
+#end
+
+
+			]]></sql>
+			<params>
+				<param name="codeVal" type="12" value="" out="N"/>
+				<param name="subsystem" type="12" value="" out="N"/>
+			</params>
+		</query>
+	</querys>
+</sqls>

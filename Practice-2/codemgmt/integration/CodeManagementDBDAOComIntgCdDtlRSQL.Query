@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="CodeManagementDBDAOComIntgCdDtlRSQL">
+			<desc><![CDATA[CodeManagementDBDAOComIntgCdDtlRSQL]]></desc>
+			<sql><![CDATA[
+SELECT B.INTG_CD_ID,
+B.INTG_CD_VAL_CTNT,
+B.INTG_CD_VAL_DP_DESC,
+B.INTG_CD_VAL_DESC,
+B.INTG_CD_VAL_DP_SEQ,
+B.APLY_ST_DT,
+B.APLY_END_DT
+FROM COM_INTG_CD_DTL B
+WHERE B.INTG_CD_ID=@[codeid]
+			]]></sql>
+			<params>
+				<param name="codeid" type="12" value="" out="N"/>
+			</params>
+		</query>
+	</querys>
+</sqls>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="ErrMsgMgmtDBDAOErrMsgVORSQL">
+			<desc><![CDATA[select error messages.   ]]></desc>
+			<sql><![CDATA[
+SELECT                                                                
+   	err_msg_cd,  
+ 	err_lvl_cd,                      
+   	err_tp_cd,                                               
+   	err_msg,                                               
+   	err_desc                                                            
+FROM com_err_msg                                                      
+WHERE lang_tp_cd = 'ENG'
+#if (${err_msg_cd} != '') 
+AND   err_msg_cd LIKE '%'|| @[err_msg_cd] || '%'
+#end
+#if (${err_msg} != '') 
+and	UPPER(err_msg) like '%'|| UPPER(@[err_msg])|| '%'
+#end			]]></sql>
+			<params>
+				<param name="err_msg_cd" type="12" value="123" out="N"/>
+				<param name="err_msg" type="12" value="123" out="N"/>
+			</params>
+		</query>
+	</querys>
+</sqls>
