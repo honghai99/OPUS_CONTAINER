@@ -63,6 +63,8 @@
     	for(var k=0; k<comboObjects.length; k++) {
     		initCombo(comboObjects[k], k+1);
     	}
+    	document.getElementById('cre_dt_fm').disabled = true;
+    	document.getElementById('cre_dt_to').disabled = true;
     	//searching when refreshing the page
     	doActionIBSheet(sheetObjects[0], formObject, IBSEARCH);
     }
@@ -234,10 +236,14 @@
 		case IBSEARCH: //for retrieve
 			formObj.f_cmd.value=SEARCH; //assign form command to server
 			ComOpenWait(true);
-			validateForm(sheetObj, formObj, sAction);
+			if(validateForm(sheetObj, formObj, sAction)) {
 //			var arr1=new Array("sheet1_", "");
 //			var sParam1=FormQueryString(formObj)+ "&" + ComGetPrefixParam(arr1);
-			sheetObj.DoSearch("DOU_TRN_0004GS.do", FormQueryString(formObj));
+				sheetObj.DoSearch("DOU_TRN_0004GS.do", FormQueryString(formObj));
+			} else {
+				ComOpenWait(false);
+			}
+			
 			break;
 		case IBRESET: //for new button
 			//remove header and table data
@@ -248,8 +254,13 @@
 			getCurrentDate();
 			break;
 		case IBSAVE: //for save button
-			formObj.f_cmd.value=MULTI; //assign form command to server
-			sheetObj.DoSave("DOU_TRN_0004GS.do", FormQueryString(formObj));
+			// save data based on data transaction status or column to database.
+			if(sheetObj.GetSaveString() != ''){
+				formObj.f_cmd.value = MULTI;
+				sheetObj.DoSave("DOU_TRAINING_0004GS.do", FormQueryString(formObj));
+			}
+			else
+				alert("No change data found");
 			break;
 		case IBINSERT: //for row add button
 			sheetObj.DataInsert(-1); //new row will be added at the bottom
@@ -315,7 +326,7 @@
 						ComShowCodeMessage("COM12115");
 						sheetObj.SetCellValue(Row, Col,OldValue,0);
 						sheetObj.SelectCell(Row, Col);
-//						return;
+						return;
 					}
 				}
 				//check on Service side
@@ -367,6 +378,7 @@
 		} else {
 			ComShowCodeMessage("COM130103"); //pop up fail to save
 		}
+		doActionIBSheet(sheetObjects[0], document.form, IBSEARCH);
 	} 
 	
 	function validateForm(sheetObj, formObj, sAction) {
@@ -407,8 +419,19 @@
 		return true;
 	}
 	
-	
-	
+	//only insert number on vendor
+	function validateVendor(vendor) {
+		// regex for vendor code
+		var regex = /^(\d{6})$/;
+		// check whether the message code matches with format.
+		if(!vendor.match(regex)){
+			alert("Only number is allowed and atlest 6 digits");
+			setTimeout(function(){
+				document.getElementById("vndr_seq");
+			},1);
+
+		} 
+	}
 	
 	
 	
