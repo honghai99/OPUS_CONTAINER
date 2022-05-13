@@ -29,11 +29,19 @@
   
     
    	/* 개발자 작업	*/
-    
+    //set sheet objects in an array
     var sheetObjects=new Array();
+    
+    //counting for multiple sheets
 	var sheetCnt=0;
+	
+	//counting for multiple combobox
 	var comboCnt = 0;
+	
+	//counting for multiple tab
 	var tabCnt = 0;
+	
+	//set this equals to 1, because 
 	var beforetab=1;
 	document.onclick=processButtonClick;
 	var comboObjects = new Array();
@@ -53,20 +61,20 @@
    	try {
    		var srcName=ComGetEvent("name");
            switch(srcName) {
-       	    case "btn_Retrieve":
-   	            doActionIBSheet(sheetObject,formObject,IBSEARCH);
-   	            //doActionIBSheet(sheetObjects[1],formObject,IBSEARCH);  	            
-       	        break;
+	       	    case "btn_Retrieve":
+	   	            doActionIBSheet(sheetObject,formObject,IBSEARCH);
+	   	            //doActionIBSheet(sheetObjects[1],formObject,IBSEARCH);  	            
+	       	        break;
          
        			/*****************grid button ************************/				
 				case "btn_New": //New
-	                doActionIBSheet(sheetObjects[0],formObject,	IBINSERT);
+	                doActionIBSheet(sheetObjects[0],formObject,	IBRESET);
 					break;
 				case "btn_DownExcel": // down Excel
-					doActionIBSheet(sheetObjects[0],formObject,	IBDOWNEXCEL);
+					doActionIBSheet(sheetObject,formObject,	IBDOWNEXCEL);
 					break;
 				case "btn_DownExcel2": // down Excel
-					doActionIBSheet(sheetObjects[0],formObject,	IBDOWNEXCEL);
+					doActionIBSheet(sheetObject,formObject,	IBDOWNEXCEL);
 					break;
 				case "btn_from_back":	
 					var fromBack = document.getElementById('fr_acct_yrmon').value;
@@ -133,15 +141,21 @@
 	/**
 	 * Event when clicking Tab
 	 * activating selected tab items
+	 * nItem --> the number of tab that user click in
 	 */
 	function tab1_OnChange(tabObj , nItem) {	
 		var formObj = document.form;
+		// it handles the case where there are multiple elements with the same name properly
 	    var objs=document.all.item("tabLayer");
-	    objs[nItem].style.display="Inline";
+	    //set the style display for next tab
+	    objs[nItem].style.display="inline-table";
+	    //hide the current tab
 	    objs[beforetab].style.display="none";
 	    //--------------- important --------------------------//
+	    //display next tab and replace the current tab
 	    objs[beforetab].style.zIndex=objs[nItem].style.zIndex -1 ;
 	    //------------------------------------------------------//
+	    //
 	    beforetab=nItem;
 	    
 	    if (beforetab == 0) {
@@ -188,34 +202,51 @@
 	
 	//click new to reset form
 	function resetForm(formObj){
-		formObj.reset();
+//		formObj.reset();
 		sheetObjects[0].RemoveAll();
 		jo_crr_cd.SetSelectIndex(0);
 		rlane_cd.SetSelectIndex(0);
 		trd_cd.SetSelectIndex(0);
+		getCurrentDate();
 		
 	}
 	
 	function informTimeRange() {
-		prev = document.getElementById("fr_acct_yrmon").value ;
-		now  = document.getElementById("to_acct_yrmon").value ;
-		prev = prev.split("-");
-		now  = now.split("-");
-		if(now-prev<0) {
-			ComShowCodeMessage("COM132905");
-		} else {
-			if(now[0] - prev[0] > 2) { // if year - previous year > 2 --> more than 3 months
-	            ComShowCodeMessage("COM132904");
-			} else if (now[0] - prev[0] == 0) { // in the same year but this month - previous month >3 --> more than 3 months
-				if (now[1] - prev[1] > 3) {
-					ComShowCodeMessage("COM132904");
+		var flag = false;
+		var formObj=document.form;
+		if (ComGetDaysBetween(formObj.fr_acct_yrmon, formObj.to_acct_yrmon)>=90){ 
+			if(!flag){
+				let choice =confirm("Year Month over 3 months, do you realy want to get data?");
+				if(choice){
+					flag = true
+					return true
+				}else{
+					 return false;
 				}
-			} else if (now[0] - prev[0] == 1) { // more than 1 year, but this month - last month > -9 --> more than 3 months
-				if (now[1] - prev[1] >-9) {
-					ComShowCodeMessage("COM132904");
-				}
-			}
+	    	}
+		} else if (ComGetDaysBetween(formObj.fr_acct_yrmon, formObj.to_acct_yrmon)<=0) {
+			ComShowMessage(ComGetMsg('COM132905'));
+			return false;
 		}
+		return true;
+	}
+	
+	function getCurrentDate() {
+		today=new Date();
+	    var year=today.getFullYear();
+	    var lastMonth=today.getMonth();
+	   	var thisMonth=today.getMonth()+1;
+	   	if(lastMonth<10) {
+	   		var prev = year + "-" +"0"+ lastMonth;
+	   		var now = year + "-" +"0"+ thisMonth;
+	   	} else {
+	   		var prev = year + "-" + lastMonth;
+	   		var now = year + "-" + thisMonth;
+	   	}
+	   	
+	   	
+	    document.getElementById("fr_acct_yrmon").value = prev ;
+		document.getElementById("to_acct_yrmon").value = now ;
 	}
 	
 	//initialize the combobox
@@ -421,7 +452,7 @@
 	
 	
 	function initSheet(sheetObj,sheetNo) {
-		var formObject=document.form;
+//		var formObject=document.form;
 		switch (sheetObj.id) {
 		case "t1sheet1": // sheet1 init
 			with (sheetObj) {
@@ -444,7 +475,7 @@
 				             {Type:"Text",    	Hidden:0,  Width:40,     Align:"Center",  ColMerge:0,   SaveName:prefix+"locl_curr_cd",      KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//currency 
 				             {Type:"Float",   	Hidden:0,  Width:100,    Align:"Right",   ColMerge:0,   SaveName:prefix+"inv_rev_act_amt",   KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//revenue
 				             {Type:"Float",   	Hidden:0,  Width:100,    Align:"Right",   ColMerge:0,   SaveName:prefix+"inv_exp_act_amt",   KeyField:0,   CalcLogic:"",   Format:"",         	 PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//expense	
-				             {Type:"Text",      Hidden:0,  Width:100,    Align:"Center",  ColMerge:0,   SaveName:prefix+"prnr_ref_no",  	 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//code
+				             {Type:"Text",      Hidden:0,  Width:100,    Align:"left",  ColMerge:0,   SaveName:prefix+"prnr_ref_no",  	 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//code
 				             {Type:"Text",     	Hidden:0,  Width:40,     Align:"Center",  ColMerge:0,   SaveName:prefix+"cust_vndr_eng_nm",  KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 }//name			             
 				             ];
 
@@ -458,12 +489,7 @@
 			}
 		case "t2sheet1": //sheet 2 init
 			with (sheetObj) {	
-//			var HeadTitle = [ 
-//								{Text:"|Partner|Lane|Invoice No|Slip No|Approved|Rev/Exp|Item|Curr.|Revenue|Expense|Customer/S.Provider|Customer/S.Provider", 
-//								Align:" Center"} ,
-//								{Text:"|Partner|Lane|Invoice No|Slip No|Approved|Rev/Exp|Item|Curr.|Revenue|Expense|Code|Name", 
-//								Align:" Center"}
-//								];
+
 			
 			var HeadTitle1 = "|Partner|Lane|Invoice No|Slip No|Approved|Rev/Exp|Item|Curr.|Revenue|Expense|Customer/S.Provider|Customer/S.Provider|";
 			var HeadTitle2 = "|Partner|Lane|Invoice No|Slip No|Approved|Rev/Exp|Item|Curr.|Revenue|Expense|Code|Name|";
@@ -503,7 +529,6 @@
 		}
 	}
 	
-	//total sum
 	
 	
 	 
@@ -612,55 +637,59 @@
 			sheetObj.SetCellValue(rowVND, 6+offset, "VND" );
 			sheetObj.SetCellValue(rowVND, 7+offset,vndRev );	
 			sheetObj.SetCellValue(rowVND, 8+offset,vndExp );
+			sheetObj.SetRowBackColor(rowVND,"#fdbb8f");
 			
 			sheetObj.SetCellValue(rowUSD, 6+offset, "USD" );
 			sheetObj.SetCellValue(rowUSD, 7+offset,usdRev );
 			sheetObj.SetCellValue(rowUSD, 8+offset,usdExp );
+			sheetObj.SetRowBackColor(rowUSD,"#fdbb8f");
 			
 			sheetObj.SetCellValue(rowEUR, 6+offset, "EUR" );	
 			sheetObj.SetCellValue(rowEUR, 7+offset,eurRev );			
 			sheetObj.SetCellValue(rowEUR, 8+offset,eurExp );
+			sheetObj.SetRowBackColor(rowEUR,"#fdbb8f");
 		
 		}
 	}
 	
 		
-	function doActionIBSheet(sheetObj,formObj,sAction, sheet) {
+	function doActionIBSheet(sheetObj,formObj,sAction) {
 		var sheetId = sheetObj.id;
 		switch (sAction) {
 			case IBSEARCH:      // retrieve	for summary
-				informTimeRange();
+				if(informTimeRange()) {
 				
 				
-				if(sheetId == "t1sheet1") {
-					formObj.f_cmd.value=SEARCH;
-					var arr1=new Array("t1sheet1_", "");
-	  				var sParam1=FormQueryString(formObj)+ "&" + ComGetPrefixParam(arr1);
-	  				ComOpenWait(true);	
-//	  				sheetObj.DoSearch("DOU_TRN_0003GS.do", sParam1);
-	  				var sXml = sheetObj.GetSearchData("DOU_TRN_0003GS.do", sParam1);
-	  				sheetObj.LoadSearchData(sXml, {Sync:1});
-	  				ComOpenWait(false);	
-				} else if(sheetId == "t2sheet1") {		
-					formObj.f_cmd.value=SEARCH03;
-	  				var arr1=new Array("t2sheet1_", "");
-	  				var sParam1=FormQueryString(formObj)+ "&" + ComGetPrefixParam(arr1);
-	  				ComOpenWait(true);	
-//	  				sheetObj.DoSearch("DOU_TRN_0003GS.do", sParam1);
-	  				var sXml = sheetObj.GetSearchData("DOU_TRN_0003GS.do", sParam1);
-	  				sheetObj.LoadSearchData(sXml, {Sync:1});
-	  				ComOpenWait(false);	
+					if(sheetId == "t1sheet1") {
+						formObj.f_cmd.value=SEARCH;
+						var arr1=new Array("t1sheet1_", "");
+		  				var sParam1=FormQueryString(formObj)+ "&" + ComGetPrefixParam(arr1);
+	//	  				ComOpenWait(true);	
+		  				sheetObj.DoSearch("DOU_TRN_0003GS.do", sParam1);
+	//	  				var sXml = sheetObj.GetSearchData("DOU_TRN_0003GS.do", sParam1);
+	//	  				sheetObj.LoadSearchData(sXml, {Sync:1});
+	//	  				ComOpenWait(false);	
+					} else if(sheetId == "t2sheet1") {		
+						formObj.f_cmd.value=SEARCH03;
+		  				var arr1=new Array("t2sheet1_", "");
+		  				var sParam1=FormQueryString(formObj)+ "&" + ComGetPrefixParam(arr1);
+		  				ComOpenWait(true);	
+	//	  				sheetObj.DoSearch("DOU_TRN_0003GS.do", sParam1);
+		  				var sXml = sheetObj.GetSearchData("DOU_TRN_0003GS.do", sParam1);
+		  				sheetObj.LoadSearchData(sXml, {Sync:1});
+		  				ComOpenWait(false);	
+					}
 				}
   						 
 	            break;				
-			case IBINSERT: 
+			case IBRESET: 
 				resetForm(formObj);
 				break;
 			case IBDOWNEXCEL:	//엑셀다운로드
 				if(sheetObj.RowCount() < 1){
 					ComShowCodeMessage("COM132501");
 				}else{
-					sheetObj.Down2Excel({DownCols: makeHiddenSkipCol(sheeRtObj), SheetDesign:1, Merge:1});
+					sheetObj.Down2Excel({DownCols: makeHiddenSkipCol(sheetObj), SheetDesign:1, Merge:1});
 				}
 				break;
 		}

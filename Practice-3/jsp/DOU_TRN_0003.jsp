@@ -130,6 +130,15 @@
 	<div class="wrap_search">
 		<div class="opus_design_inquiry">
 		    <table>
+		    <colgroup>
+					<col width="100" />				
+					<col width="100" />						
+					<col width="70" />	
+					<col width="100" />				
+					<col width="70" />					
+					<col width="100" />	
+					<col width="70" />			
+			   </colgroup> 
 		        <tbody>
 					<tr>
 						<th width="">Year month</th>					
