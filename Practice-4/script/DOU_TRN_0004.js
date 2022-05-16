@@ -257,10 +257,11 @@
 			// save data based on data transaction status or column to database.
 			if(sheetObj.GetSaveString() != ''){
 				formObj.f_cmd.value = MULTI;
-				sheetObj.DoSave("DOU_TRAINING_0004GS.do", FormQueryString(formObj));
+				sheetObj.DoSave("DOU_TRN_0004GS.do", FormQueryString(formObj));
 			}
 			else
-				alert("No change data found");
+
+			ComShowCodeMessage("COM132910");
 			break;
 		case IBINSERT: //for row add button
 			sheetObj.DataInsert(-1); //new row will be added at the bottom
@@ -286,6 +287,7 @@
 	//event fires when ending retrieve in sheet1
 	function sheet1_OnSearchEnd(sheetObj, Code, Msg, StCode, StMsg) { 
 	 	ComOpenWait(false);
+	 	
 	}
 	
 	
@@ -425,7 +427,9 @@
 		var regex = /^(\d{6})$/;
 		// check whether the message code matches with format.
 		if(!vendor.match(regex)){
-			alert("Only number is allowed and atlest 6 digits");
+//			alert("Only number is allowed and atlest 6 digits");
+			
+			ComShowCodeMessage("COM140000");
 			setTimeout(function(){
 				document.getElementById("vndr_seq");
 			},1);
@@ -433,42 +437,5 @@
 		} 
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
