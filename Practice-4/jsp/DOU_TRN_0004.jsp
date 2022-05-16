@@ -62,7 +62,7 @@
 		out.println(e.toString());
 	}
 %>
-<html>
+
 <head>
 <title>Practice 4</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -80,7 +80,7 @@
 </script>
 </head>
 
-<body  onLoad="setupPage();">
+
 <form name="form">
 <input type="hidden" name="f_cmd">
 <input type="hidden" name="pagerows">
@@ -93,7 +93,7 @@
 		
 		<!-- opus_design_btn (S) -->
 		<div class="opus_design_btn">
-			<button class="btn_accent" name="btn_Retrieve" id="btn_Retrieve" type="button">Retrieve</button><!-- 
+			<button class="btn_accent" name="btn_Retrieve" id="btn_Retrieve" type="button">Search</button><!-- 
 		    --><button class="btn_normal" name="btn_New" id="btn_New" type="button">New</button><!--
 			--><button class="btn_normal" name="btn_Save" id="btn_Save" type="button">Save</button><!--
 			--><button class="btn_normal" name="btn_DownExcel" id=btn_DownExcel type="button">Down Excel</button>
@@ -117,7 +117,6 @@
 					<col width="70" />	
 					<col width="100" />				
 					<col width="70" />					
-					<col width="*" />				
 			   </colgroup> 
 			   <tbody>
 			   		<tr>
@@ -125,13 +124,13 @@
 						<!--  ComComboObject receive comboid, iColCnt, iWidth, iStyle, iCss, iShowCol, iEdit, iTab, iUseCode-->
 						<td><script type="text/javascript">ComComboObject('s_jo_crr_cd',1,90,0,0,0);</script></td>
 						<th>Vendor</th>
-						<td><input type="num"  style="width:60px;" name="vndr_seq" id="vndr_seq" dataformat="num" maxlength="6"/></td>
+						<td><input type="text" onblur="validateVendor(value)"  style="width:60px;" name="vndr_seq" id="vndr_seq" dataformat="num" maxlength="6"/></td>
 						<th>Create Date</th>
 						<td>
 							<input type="text" style="width:100px;text-align:center;" placeholder="YYYY-MM-DD" caption="Create Date From" name="cre_dt_fm" id="cre_dt_fm" dataformat="ymd" maxLength="10" minlength="8" ><!--  
-							--><button type="button" class="calendar ir" name="btns_calendar1" id="btns_calendar1" tabindex="-1"></button>~
+							--><button type="button" class="calendar ir" name="btns_calendar1" id="btns_calendar1" ></button>~
 							<input type="text" style="width:100px;text-align:center;" placeholder="YYYY-MM-DD" caption="Create Date To" name="cre_dt_to" id="cre_dt_to" dataformat="ymd" maxLength="10" minlength="8"><!-- 
-							--><button type="button" class="calendar ir" name="btns_calendar2" id="btns_calendar2" tabindex="-1"></button>
+							--><button type="button" class="calendar ir" name="btns_calendar2" id="btns_calendar2" "></button>
 						</td>
 					</tr> 
 			   </tbody>
@@ -150,15 +149,11 @@
 				--><button class="btn_accent" name="btn_RowDelete" id="btn_RowDelete" type="button">Row Delete</button>			
 			</div>
 			<!-- opus_design_btn (E) -->
-			<script type="text/javascript">ComSheetObject('sheet1');</script>		
+			<script type="text/javascript">ComSheetObject('sheet1');</script>	
 		</div>
 		<!-- opus_design_grid(E) -->
+			
 	</div>
 </div>
-	
 
-
-<!-- 개발자 작업  끝 -->
 </form>
-</body>
-</html>
