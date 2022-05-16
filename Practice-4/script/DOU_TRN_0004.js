@@ -2,8 +2,8 @@
 *Copyright(c) 2022 CyberLogitec
 *@FileName : DOU_TRN_0004.js
 *@FileTitle : Practice 4
-*Open Issues :
-*Change history :
+*Open Issues : 
+*Change history : 
 *@LastModifyDate : 2022.05.05
 *@LastModifier : 
 *@LastVersion : 1.0
@@ -408,14 +408,15 @@
 	            	ComShowCodeMessage("COM132907");	
 	            	return false;
 	            }           
-	            return false;
+	            return true;
 	        } else if (creDtFm.value == "" && creDtTo.value != "") { //check date from if it was inserted
 	        	ComShowCodeMessage("COM132908");
 	        	return false;
 	        } else if (creDtFm.value != "" && creDtTo.value == "") {//check date to if it was inserted
 	        	ComShowCodeMessage("COM132909");
 	        	return false;
-	        }	        
+	        }	 
+	        
 			break;
 		} 
 		return true;
@@ -437,5 +438,14 @@
 		} 
 	}
 	
+	
+	
+	
+	
+	
+	
+	
 
+	
+	
 	
