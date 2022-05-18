@@ -65,7 +65,7 @@
 		out.println(e.toString());
 	}
 %>
-<html>
+
 <head>
 <title>Error Message Management</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -81,7 +81,7 @@
 </script>
 </head>
 <!-- onload sau khi the chay xong het, chay het the roi ham onload moi bat dau chay, chay cuoi cung khi giao dien load xong -->
-<body  onLoad="setupPage();">
+
 <form name="form">
 <input type="hidden" name="f_cmd">
 <input type="hidden" name="pagerows">
@@ -131,5 +131,3 @@
 
 <!-- 개발자 작업  끝 -->
 </form>
-</body>
-</html>
