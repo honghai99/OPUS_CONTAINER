@@ -1,9 +1,10 @@
+
 /*=========================================================
 *Copyright(c) 2022 CyberLogitec
 *@FileName : DOU_TRN_0004.js
 *@FileTitle : Practice 4
-*Open Issues : 
-*Change history : 
+*Open Issues :
+*Change history :
 *@LastModifyDate : 2022.05.05
 *@LastModifier : 
 *@LastVersion : 1.0
@@ -37,6 +38,24 @@
 	//set combo box objects in an array
 	var comboObjects = new Array();
 	
+	function initControl() {
+     	var formObject=document.form;
+         //Axon 이벤트 처리1. 이벤트catch(개발자변경)
+         axon_event.addListenerFormat('blur', 'keypressFormat', formObject);
+     }
+	
+	//check valid number in vendor code
+    function keypressFormat() {
+    	obj = ComGetEvent();	
+        if(obj.attributes.dataformat.nodeValue == null) return;
+    	    window.defaultStatus=obj.attributes.dataformat.nodeValue;
+    	    switch(obj.name) {
+	        case "s_vndr_seq":
+	        	ComEditFormating();
+	            break;
+    	    }
+      }
+    
 	
 	
 	//ComSheetObject from JSP call this function
@@ -63,10 +82,11 @@
     	for(var k=0; k<comboObjects.length; k++) {
     		initCombo(comboObjects[k], k+1);
     	}
-    	document.getElementById('cre_dt_fm').disabled = true;
-    	document.getElementById('cre_dt_to').disabled = true;
+    	document.getElementById('s_cre_dt_fm').disabled = true;
+    	document.getElementById('s_cre_dt_to').disabled = true;
     	//searching when refreshing the page
     	doActionIBSheet(sheetObjects[0], formObject, IBSEARCH);
+    	initControl();
     }
 	
 	//handle the event that user click on page
@@ -100,9 +120,9 @@
 				case "btns_calendar2": 
 					var cal=new ComCalendar();
 	                if(srcName == "btns_calendar1"){
-	                    cal.select(formObject.cre_dt_fm, 'yyyy-MM-dd');
+	                    cal.select(formObject.s_cre_dt_fm, 'yyyy-MM-dd');
 	                }else{
-	                    cal.select(formObject.cre_dt_to, 'yyyy-MM-dd');
+	                    cal.select(formObject.s_cre_dt_to, 'yyyy-MM-dd');
 	                }
 	                break;
 				
@@ -195,29 +215,29 @@
 				var cols = [ 
 				             { Type : "Status",   Hidden : 1, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "ibflag" }, 
 				             { Type : "CheckBox", Hidden : 0, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "del_chk" }, 
-				             { Type : "Text", 	  Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "jo_crr_cd", 	 KeyField : 1, Format : "", UpdateEdit : 0, InsertEdit : 1, EditLen: 3 }, //carrier
-				             { Type : "Combo", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "rlane_cd",    KeyField : 1, Format : "", UpdateEdit : 0, InsertEdit : 1, EditLen: 5  }, //rev lane
-				             { Type : "Text",	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "vndr_seq",    KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 6 }, //vendor code
-				             { Type : "Text", 	  Hidden : 0, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "cust_cnt_cd", KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 2 }, //Customer code
-				             { Type : "Text", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "cust_seq",    KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 6 }, //customer code
-				             { Type : "Text",     Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "trd_cd", 	 KeyField : 0, Format : "", UpdateEdit : 1, InsertEdit : 1	, EditLen: 3 }, //trade
-				             { Type : "Combo",    Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "delt_flg", 	 KeyField : 0, Format : "", UpdateEdit : 1, InsertEdit : 1}, //delete flag
-				             { Type : "Text",     Hidden : 0, Width : 150, Align : "Center", ColMerge : 0, SaveName : "cre_dt", 	 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0 }, //create date
-				             { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left",   ColMerge : 0, SaveName : "cre_usr_id",  KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0 }, //create user ID
-				             { Type : "Text", 	  Hidden : 0, Width : 150, Align : "Center", ColMerge : 0, SaveName : "upd_dt", 	 KeyField : 0, Format : "", UpdateEdit : 0,InsertEdit : 0 }, //update date
-				             { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left", 	 ColMerge : 0, SaveName : "upd_usr_id",  KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0} //update user id
+				             { Type : "Text", 	  Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "jo_crr_cd", 	 KeyField : 1, Format : "", UpdateEdit : 0, InsertEdit : 1,  EditLen: 3   }, //carrier
+				             { Type : "Combo", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "rlane_cd",    KeyField : 1, Format : "", UpdateEdit : 0, InsertEdit : 1,  EditLen: 5   }, //rev lane
+				             { Type : "Text",	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "vndr_seq",    KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 6   }, //vendor code
+				             { Type : "Text", 	  Hidden : 0, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "cust_cnt_cd", KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 2   }, //Customer code
+				             { Type : "Text", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "cust_seq",    KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 6   }, //customer code
+				             { Type : "Text",     Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "trd_cd", 	 KeyField : 0, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 3   }, //trade
+				             { Type : "Combo",    Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "delt_flg", 	 KeyField : 0, Format : "", UpdateEdit : 1, InsertEdit : 1				  }, //delete flag
+				             { Type : "Text",     Hidden : 0, Width : 150, Align : "Center", ColMerge : 0, SaveName : "cre_dt", 	 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0 				  }, //create date
+				             { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left",   ColMerge : 0, SaveName : "cre_usr_id",  KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0				  }, //create user ID
+				             { Type : "Text", 	  Hidden : 0, Width : 150, Align : "Center", ColMerge : 0, SaveName : "upd_dt", 	 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0  			  }, //update date
+				             { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left", 	 ColMerge : 0, SaveName : "upd_usr_id",  KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0				  } //update user id
 				             ];
 				//configure functionality of each column into JSON format.
 				InitColumns(cols);
 				//allow edit cells
 				SetEditable(1);
-				SetColProperty("jo_crr_cd", { AcceptKeys : "E|N", InputCaseSensitive : 1 });
-				SetColProperty("vndr_seq", { AcceptKeys : "N"});
-				SetColProperty("cust_cnt_cd", { AcceptKeys : "E", InputCaseSensitive : 1});
-				SetColProperty("cust_seq", { AcceptKeys : "N"});
-				SetColProperty("trd_cd", { AcceptKeys : "E|N", InputCaseSensitive : 1 });
-				SetColProperty("rlane_cd", { ComboText : lane, ComboCode : lane });
-				SetColProperty("delt_flg", { ComboText : "N|Y", ComboCode : "N|Y" });
+				SetColProperty("jo_crr_cd",   { AcceptKeys : "E|N", InputCaseSensitive : 1 });
+				SetColProperty("vndr_seq",    { AcceptKeys : "N"});
+				SetColProperty("cust_cnt_cd", { AcceptKeys : "E",   InputCaseSensitive : 1});
+				SetColProperty("cust_seq",	  { AcceptKeys : "N"});
+				SetColProperty("trd_cd", 	  { AcceptKeys : "E|N", InputCaseSensitive : 1 });
+				SetColProperty("rlane_cd", 	  { ComboText  : lane,  ComboCode : lane });
+				SetColProperty("delt_flg", 	  { ComboText  : "N|Y", ComboCode : "N|Y" });
 				resizeSheet();
 			}
 			break;
@@ -310,8 +330,8 @@
    		
    		//set by id
    		var a = document.getElementById("cre_dt_fm").value
-	    document.getElementById("cre_dt_fm").value = prev ;
-		document.getElementById("cre_dt_to").value = now ;
+	    document.getElementById("s_cre_dt_fm").value = prev ;
+		document.getElementById("s_cre_dt_to").value = now ;
 	}
 	
 	function sheet1_OnChange(sheetObj, Row, Col, Value, OldValue, RaiseFlag) {
@@ -326,7 +346,7 @@
 					if(i != Row && sheetObj.GetCellValue(Row,"jo_crr_cd") == sheetObj.GetCellValue(i,"jo_crr_cd")
 							&& sheetObj.GetCellValue(Row,"rlane_cd") == sheetObj.GetCellValue(i,"rlane_cd")){
 						ComShowCodeMessage("COM12115");
-						sheetObj.SetCellValue(Row, Col,OldValue,0);
+						sheetObj.SetCellValue(Row, Col,0);
 						sheetObj.SelectCell(Row, Col);
 						return;
 					}
@@ -334,8 +354,8 @@
 				//check on Service side
 				formObject.f_cmd.value		= COMMAND01;
 				var param = FormQueryString(formObject) + "&jo_crr_cd=" + sheetObj.GetCellValue(Row,"jo_crr_cd") + "&rlane_cd=" + sheetObj.GetCellValue(Row,"rlane_cd");
-				var sXml = sheetObj.GetSearchData("DOU_TRN_0004GS.do", param,{sync:1});
-				var flag				= ComGetEtcData(sXml, "ISEXIST");
+				var sXml  = sheetObj.GetSearchData("DOU_TRN_0004GS.do", param,{sync:1});
+				var flag  = ComGetEtcData(sXml, "ISEXIST");
 				if(flag == 'Y'){
 					ComShowCodeMessage("COM12115");
 					sheetObj.SetCellValue(Row, Col,OldValue,0);
@@ -388,11 +408,11 @@
 		switch (sAction) {
 		case IBSEARCH: // retrieve
 			var regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/; //regex for yyyy/mm/dd
-			var creDtFm = form.cre_dt_fm; 
-	        var creDtTo = form.cre_dt_to;
-	        creDtFm1 = document.getElementById("cre_dt_fm").value; //get value from date from 
-	        creDtTo1 = document.getElementById("cre_dt_to").value; //get value from date to
-	        var compare = document.getElementById("cre_dt_to").value.replaceAll('-','') - document.getElementById("cre_dt_fm").value.replaceAll('-',''); //take date to - date fr
+			var creDtFm = form.s_cre_dt_fm; 
+	        var creDtTo = form.s_cre_dt_to;
+	        creDtFm1 = document.getElementById("s_cre_dt_fm").value; //get value from date from 
+	        creDtTo1 = document.getElementById("s_cre_dt_to").value; //get value from date to
+	        var compare = document.getElementById("s_cre_dt_to").value.replaceAll('-','') - document.getElementById("s_cre_dt_fm").value.replaceAll('-',''); //take date to - date fr
 	        if(creDtFm.value != "" && creDtTo.value != "" ) { // if values in box search not blank and date to - date fr < 0    
 	            if(compare < 0 && creDtFm1.match(regex) && creDtFm1.match(regex)) {
 	            	ComShowCodeMessage("COM132905");  // show msg date fr cannot > than date to
@@ -424,28 +444,18 @@
 	
 	//only insert number on vendor
 	function validateVendor(vendor) {
-		// regex for vendor code
-		var regex = /^(\d{6})$/;
-		// check whether the message code matches with format.
-		if(!vendor.match(regex)){
-//			alert("Only number is allowed and atlest 6 digits");
-			
-			ComShowCodeMessage("COM140000");
-			setTimeout(function(){
-				document.getElementById("vndr_seq");
-			},1);
-
-		} 
+		if(""!=vendor) {
+			// regex for vendor code
+			var regex = /^(\d{6})$/;
+			// check whether the message code matches with format.
+			if(!vendor.match(regex)){
+	//			alert("Only number is allowed and atlest 6 digits");
+				
+				ComShowCodeMessage("COM140000");
+				setTimeout(function(){
+					document.getElementById("s_vndr_seq");
+				},1);
+	
+			} 
+		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	
