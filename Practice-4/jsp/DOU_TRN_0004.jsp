@@ -124,12 +124,12 @@
 						<!--  ComComboObject receive comboid, iColCnt, iWidth, iStyle, iCss, iShowCol, iEdit, iTab, iUseCode-->
 						<td><script type="text/javascript">ComComboObject('s_jo_crr_cd',1,90,0,0,0);</script></td>
 						<th>Vendor</th>
-						<td><input type="text" onblur="validateVendor(value)"  style="width:60px;" name="vndr_seq" id="vndr_seq" dataformat="num" maxlength="6"/></td>
+						<td><input type="text" onblur="validateVendor(value)"  style="width:60px;" name="s_vndr_seq" id="s_vndr_seq" dataformat="num" maxlength="6"/></td>
 						<th>Create Date</th>
 						<td>
-							<input type="text" style="width:100px;text-align:center;" placeholder="YYYY-MM-DD" caption="Create Date From" name="cre_dt_fm" id="cre_dt_fm" dataformat="ymd" maxLength="10" minlength="8" ><!--  
+							<input type="text" style="width:100px;text-align:center;" placeholder="YYYY-MM-DD" caption="Create Date From" name="s_cre_dt_fm" id="s_cre_dt_fm" dataformat="ymd" maxLength="10" minlength="8" ><!--  
 							--><button type="button" class="calendar ir" name="btns_calendar1" id="btns_calendar1" ></button>~
-							<input type="text" style="width:100px;text-align:center;" placeholder="YYYY-MM-DD" caption="Create Date To" name="cre_dt_to" id="cre_dt_to" dataformat="ymd" maxLength="10" minlength="8"><!-- 
+							<input type="text" style="width:100px;text-align:center;" placeholder="YYYY-MM-DD" caption="Create Date To" name="s_cre_dt_to" id="s_cre_dt_to" dataformat="ymd" maxLength="10" minlength="8"><!-- 
 							--><button type="button" class="calendar ir" name="btns_calendar2" id="btns_calendar2" "></button>
 						</td>
 					</tr> 
@@ -155,5 +155,8 @@
 			
 	</div>
 </div>
+	
 
+
+<!-- 개발자 작업  끝 -->
 </form>
