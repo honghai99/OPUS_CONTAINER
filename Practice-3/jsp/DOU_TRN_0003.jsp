@@ -106,7 +106,7 @@
 </script>
 </head>
 
-<body onLoad="setupPage();">
+
 <form name="form">
 <input type="hidden" name="f_cmd">
 <input type="hidden" name="pagerows">
@@ -163,7 +163,7 @@
 <div class="wrap_result">
 	<!-- layout_wrap(S) -->
 	<div class="layout_wrap">
-		<div class="opus_design_tab">
+		<div class="opus_design_tab sm">
 			<script language="javascript">ComTabObject('tab1');</script>
 		</div>
 		
@@ -181,4 +181,4 @@
 
 <!-- 개발자 작업  끝 -->
 </form>
-</body>
+

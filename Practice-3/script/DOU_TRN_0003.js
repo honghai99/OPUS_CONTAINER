@@ -27,11 +27,10 @@
      * @class DOU_TRN_0003 : DOU_TRN_0003 생성을 위한 화면에서 사용하는 업무 스크립트를 정의한다.
      */
   
-    
    	/* 개발자 작업	*/
     //set sheet objects in an array
     var sheetObjects=new Array();
-    
+    var rows;
     //counting for multiple sheets
 	var sheetCnt=0;
 	
@@ -63,7 +62,7 @@
            switch(srcName) {
 	       	    case "btn_Retrieve":
 	   	            doActionIBSheet(sheetObject,formObject,IBSEARCH);
-	   	            //doActionIBSheet(sheetObjects[1],formObject,IBSEARCH);  	            
+	   	            //doActionIBSheet(sheetObjects[1],formObject,IBSEARCH);  	   
 	       	        break;
          
        			/*****************grid button ************************/				
@@ -76,25 +75,49 @@
 				case "btn_DownExcel2": // down Excel
 					doActionIBSheet(sheetObject,formObject,	IBDOWNEXCEL);
 					break;
-				case "btn_from_back":	
-					var fromBack = document.getElementById('fr_acct_yrmon').value;
-					editDate(fromBack, "backFrom");
-					break;
+//				case "btn_from_back":	
+//					var fromBack = document.getElementById('fr_acct_yrmon').value;
+//					editDate(fromBack, "backFrom");
+//					break;					
+//				case "btn_from_next":
+//					var fromBack = document.getElementById('fr_acct_yrmon').value;
+//					editDate(fromBack, "nextFrom");
+//					break;					
+//				case "btn_to_back":
+//					var toNext = document.getElementById('to_acct_yrmon').value;
+//					editDate(toNext, "backTo");
+//					break;				
+//				case "btn_to_next":
+//					var toNext = document.getElementById('to_acct_yrmon').value;
+//					editDate(toNext, "nextTo");
+//					break;
 					
-				case "btn_from_next":
-					var fromBack = document.getElementById('fr_acct_yrmon').value;
-					editDate(fromBack, "nextFrom");
-					break;
-					
-				case "btn_to_back":
-					var toNext = document.getElementById('to_acct_yrmon').value;
-					editDate(toNext, "backTo");
-					break;
-					
-				case "btn_to_next":
-					var toNext = document.getElementById('to_acct_yrmon').value;
-					editDate(toNext, "nextTo");
-					break;
+				case "btn_from_back":
+	                UF_addMonth(formObject.fr_acct_yrmon, -1);
+//	                sheetObject.RemoveAll();
+	                break;
+	            case "btn_from_next":
+	                if (!GetCheckConditionPeriod()){
+	                    ComShowCodeMessage("COM132905");
+	                    return;
+	                }
+	                UF_addMonth(formObject.fr_acct_yrmon, +1);
+//	                sheetObject.RemoveAll();
+	                break;
+	            case "btn_to_back":
+	                if (!GetCheckConditionPeriod()){
+	                    ComShowCodeMessage("COM132905");
+	                    return;
+	                }
+	                UF_addMonth(formObject.to_acct_yrmon, -1);
+//	                sheetObject.RemoveAll();
+	                break;
+	            case "btn_to_next":
+	                UF_addMonth(formObject.to_acct_yrmon, +1);
+//	                sheetObject.RemoveAll();
+	                break;
+	                
+	                
 				case "summary":
 					doActionIBSheet(sheetObjects[0],formObject,IBSEARCH,0);
 					break;
@@ -162,11 +185,11 @@
 	        ComFireEvent(ComGetObject("btn_Retrieve") ,"click");
 	    }else{
 	    	ComFireEvent(ComGetObject("btn_Retrieve") ,"click");
-	    	
 	    }
 	    
 	    resizeSheet();
 	}
+	
 	
 	//set array for sheets
 	function setSheetObject(sheet_obj){
@@ -194,10 +217,7 @@
         for (var k  = 0; k<tabObjects.length; k++) {
         	initTab(tabObjects[k], k+1);
         	tabObjects[k].SetSelectedIndex(0);
-        }
-        
-       
-        
+        }              
     }
 	
 	//click new to reset form
@@ -224,7 +244,7 @@
 					 return false;
 				}
 	    	}
-		} else if (ComGetDaysBetween(formObj.fr_acct_yrmon, formObj.to_acct_yrmon)<=0) {
+		} else if (ComGetDaysBetween(formObj.fr_acct_yrmon, formObj.to_acct_yrmon)<0) {
 			ComShowMessage(ComGetMsg('COM132905'));
 			return false;
 		}
@@ -475,7 +495,7 @@
 				             {Type:"Text",    	Hidden:0,  Width:40,     Align:"Center",  ColMerge:0,   SaveName:prefix+"locl_curr_cd",      KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//currency 
 				             {Type:"Float",   	Hidden:0,  Width:100,    Align:"Right",   ColMerge:0,   SaveName:prefix+"inv_rev_act_amt",   KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//revenue
 				             {Type:"Float",   	Hidden:0,  Width:100,    Align:"Right",   ColMerge:0,   SaveName:prefix+"inv_exp_act_amt",   KeyField:0,   CalcLogic:"",   Format:"",         	 PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//expense	
-				             {Type:"Text",      Hidden:0,  Width:100,    Align:"left",  ColMerge:0,   SaveName:prefix+"prnr_ref_no",  	 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//code
+				             {Type:"Text",      Hidden:0,  Width:100,    Align:"left",    ColMerge:0,   SaveName:prefix+"prnr_ref_no",  	 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//code
 				             {Type:"Text",     	Hidden:0,  Width:40,     Align:"Center",  ColMerge:0,   SaveName:prefix+"cust_vndr_eng_nm",  KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 }//name			             
 				             ];
 
@@ -509,13 +529,13 @@
 			             {Type:"Text",      Hidden:0,  Width:150,    Align:"Center",  ColMerge:0,   SaveName:prefix+"inv_no", 	 		 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//invoice no
 			             {Type:"Text",      Hidden:0,  Width:150,    Align:"Center",  ColMerge:0,   SaveName:prefix+"csr_no",     		 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//slipno
 			             {Type:"Text",     	Hidden:0,  Width:70,     Align:"Center",  ColMerge:0,   SaveName:prefix+"apro_flg",   		 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//approved 
-			             {Type:"Text",      Hidden:0,  Width:70,    Align:"Center",  ColMerge:0,   SaveName:prefix+"re_divr_cd",  	 	 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//rev/exp
-			             {Type:"Text",     	Hidden:0,  Width:60,    Align:"Center",  ColMerge:0,   SaveName:prefix+"jo_stl_itm_cd",  	 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//item
+			             {Type:"Text",      Hidden:0,  Width:70,     Align:"Center",  ColMerge:0,   SaveName:prefix+"re_divr_cd",  	 	 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//rev/exp
+			             {Type:"Text",     	Hidden:0,  Width:60,     Align:"Center",  ColMerge:0,   SaveName:prefix+"jo_stl_itm_cd",  	 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//item
 			             {Type:"Text",    	Hidden:0,  Width:40,     Align:"Center",  ColMerge:0,   SaveName:prefix+"locl_curr_cd",      KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//currency 
-			             {Type:"Float",   	Hidden:0,  Width:100,    Align:"Right",  ColMerge:0,    SaveName:prefix+"inv_rev_act_amt",   KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//revenue
-			             {Type:"Float",   	Hidden:0,  Width:100,    Align:"Right",  ColMerge:0,    SaveName:prefix+"inv_exp_act_amt",   KeyField:0,   CalcLogic:"",   Format:"",         	 PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//expense	
+			             {Type:"Float",   	Hidden:0,  Width:100,    Align:"Right",   ColMerge:0,   SaveName:prefix+"inv_rev_act_amt",   KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//revenue
+			             {Type:"Float",   	Hidden:0,  Width:100,    Align:"Right",   ColMerge:0,   SaveName:prefix+"inv_exp_act_amt",   KeyField:0,   CalcLogic:"",   Format:"",         	 PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//expense	
 			             {Type:"Text",      Hidden:0,  Width:100,    Align:"Center",  ColMerge:0,   SaveName:prefix+"prnr_ref_no",  	 KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 },//code
-			             {Type:"Text",     	Hidden:0,  Width:40,    Align:"Center",  ColMerge:0,   SaveName:prefix+"cust_vndr_eng_nm",  KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 }//name	
+			             {Type:"Text",     	Hidden:0,  Width:40,     Align:"Center",  ColMerge:0,   SaveName:prefix+"cust_vndr_eng_nm",  KeyField:0,   CalcLogic:"",   Format:"",            PointCount:0,   UpdateEdit:0,   InsertEdit:0 }//name	
 			             ];
             
 			InitColumns(cols);     	
@@ -532,9 +552,6 @@
 	
 	
 	 
-
-		
-	
 	
 	function resizeSheet() {
 		if(beforetab == 0){
@@ -574,12 +591,16 @@
 			for(x=0;x<sRow.length;x++){
 				sheetObj.SetCellValue(sRow[x], 8,cell[x] );				
 			}	
-	 
+			sheetObjects[1].SetSelectRow(rows);
 		ComOpenWait(false);	
 	}
 	
-	function t1sheet1_OnDblClick(sheetObj, formObject) { 
+	function t1sheet1_OnDblClick(sheetObj, formObject, Row, Col) { 
+		var rows = Row;
 		tab1_OnChange(tabObjects[1] , 1);
+		sheetObjects[1].SetSelectRow(rows);
+//		doActionIBSheet(sheetObjects[1],formObject,IBSEARCH,1);
+//		sheetObjects[1].SetSelectRow(row);
 	}
 	
 	
@@ -604,7 +625,7 @@
 			
 			var eurRev = 0;		
 			var eurExp = 0;
-			
+			sheetObj.DataInsert(-1);
 			var rowVND =sheetObj.DataInsert(-1);
 			var rowUSD =sheetObj.DataInsert(-1);
 			var rowEUR =sheetObj.DataInsert(-1);
@@ -620,35 +641,31 @@
 					vndRev += sheetObj.GetCellValue(i+2,7+offset);
 					vndExp += sheetObj.GetCellValue(i+2,8+offset);
 					if(vndRev != 0 || vndExp !=0 ) {
-						var rowVND =sheetObj.DataInsert(-1);						
+						sheetObj.SetCellValue(rowVND, 6+offset, "VND" );
+						sheetObj.SetCellValue(rowVND, 7+offset,vndRev );	
+						sheetObj.SetCellValue(rowVND, 8+offset,vndExp );
+						sheetObj.SetRowBackColor(rowVND,"#fdbb8f");
 					}
 				} else if(cur[i] == "USD") {
 					usdRev += sheetObj.GetCellValue(i+2,7+offset);
 					usdExp += sheetObj.GetCellValue(i+2,8+offset);
 					if(usdRev != 0 || usdExp !=0) {		
+						sheetObj.SetCellValue(rowUSD, 6+offset, "USD" );
+						sheetObj.SetCellValue(rowUSD, 7+offset,usdRev );
+						sheetObj.SetCellValue(rowUSD, 8+offset,usdExp );
+						sheetObj.SetRowBackColor(rowUSD,"#fdbb8f");
 					}
 				} else if(cur[i] == "EUR") {
 					eurRev += sheetObj.GetCellValue(i+2,7+offset);
 					eurExp += sheetObj.GetCellValue(i+2,8+offset);
-					if(eurRev != 0 || eurExp !=0) {										
+					if(eurRev != 0 || eurExp !=0) {		
+						sheetObj.SetCellValue(rowEUR, 6+offset, "EUR" );	
+						sheetObj.SetCellValue(rowEUR, 7+offset,eurRev );			
+						sheetObj.SetCellValue(rowEUR, 8+offset,eurExp );
+						sheetObj.SetRowBackColor(rowEUR,"#fdbb8f");
 					}
 				}
 			}
-			sheetObj.SetCellValue(rowVND, 6+offset, "VND" );
-			sheetObj.SetCellValue(rowVND, 7+offset,vndRev );	
-			sheetObj.SetCellValue(rowVND, 8+offset,vndExp );
-			sheetObj.SetRowBackColor(rowVND,"#fdbb8f");
-			
-			sheetObj.SetCellValue(rowUSD, 6+offset, "USD" );
-			sheetObj.SetCellValue(rowUSD, 7+offset,usdRev );
-			sheetObj.SetCellValue(rowUSD, 8+offset,usdExp );
-			sheetObj.SetRowBackColor(rowUSD,"#fdbb8f");
-			
-			sheetObj.SetCellValue(rowEUR, 6+offset, "EUR" );	
-			sheetObj.SetCellValue(rowEUR, 7+offset,eurRev );			
-			sheetObj.SetCellValue(rowEUR, 8+offset,eurExp );
-			sheetObj.SetRowBackColor(rowEUR,"#fdbb8f");
-		
 		}
 	}
 	
@@ -657,9 +674,7 @@
 		var sheetId = sheetObj.id;
 		switch (sAction) {
 			case IBSEARCH:      // retrieve	for summary
-				if(informTimeRange()) {
-				
-				
+				if(informTimeRange()) {				
 					if(sheetId == "t1sheet1") {
 						formObj.f_cmd.value=SEARCH;
 						var arr1=new Array("t1sheet1_", "");
@@ -669,6 +684,8 @@
 	//	  				var sXml = sheetObj.GetSearchData("DOU_TRN_0003GS.do", sParam1);
 	//	  				sheetObj.LoadSearchData(sXml, {Sync:1});
 	//	  				ComOpenWait(false);	
+		  				var row = sheetObj.GetSelectRow();
+		  				sheetObj.SetSelectRow(row);
 					} else if(sheetId == "t2sheet1") {		
 						formObj.f_cmd.value=SEARCH03;
 		  				var arr1=new Array("t2sheet1_", "");
@@ -678,6 +695,8 @@
 		  				var sXml = sheetObj.GetSearchData("DOU_TRN_0003GS.do", sParam1);
 		  				sheetObj.LoadSearchData(sXml, {Sync:1});
 		  				ComOpenWait(false);	
+		  				var row = sheetObj.GetSelectRow();
+		  				sheetObj.SetSelectRow(row);
 					}
 				}
   						 
@@ -698,78 +717,94 @@
 			
 		
 		
-	function editDate(fromBack, sAction) {
-		if (sAction=="backFrom") {
-			fromBack=fromBack.substring(0,fromBack.length).split("-");
-			var monthBack = fromBack[1]
-			monthBack = monthBack.valueOf(monthBack)-1;
-			var zero = "0";
-			if(monthBack==0) {
-				monthBack = 12;
-				yearBack = fromBack[0]
-				yearBack = yearBack.valueOf(yearBack)-1;
-						
-				var check = document.getElementById("fr_acct_yrmon").value = yearBack + "-" +  "" + monthBack ;
-			} else if(monthBack>=10 && monthBack<=12) {
-				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
-			} else if(monthBack>=1 && monthBack<=9) {
-				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
-			}					
-		}
-			
-		if (sAction=="nextFrom") {
-			fromBack=fromBack.substring(0,fromBack.length).split("-");
-			var monthBack = fromBack[1]
-			monthBack = parseInt(monthBack)+1;
-			var zero = "0";
-			if(monthBack==13) {
-				monthBack = 1;
-				yearBack = fromBack[0]
-				yearBack = parseInt(yearBack)+1;
-					
-				var check = document.getElementById("fr_acct_yrmon").value = yearBack + "-" +  zero + monthBack ;
-			} else if(monthBack>=10 && monthBack<=12) {
-				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
-			} else if(monthBack>=1 && monthBack<=9) {
-				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
-			}					
-		}
-			
-		if(sAction=="backTo") {
-			fromBack=fromBack.substring(0,fromBack.length).split("-");
-			var monthBack = fromBack[1]
-			monthBack = monthBack.valueOf(monthBack)-1;
-			var zero = "0";
-			if(monthBack==0) {
-				monthBack = 12;
-				yearBack = fromBack[0]
-				yearBack = yearBack.valueOf(yearBack)-1;
-						
-				var check = document.getElementById("to_acct_yrmon").value = yearBack + "-" +  "" + monthBack ;
-			} else if(monthBack>=10 && monthBack<=12) {
-				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
-			} else if(monthBack>=1 && monthBack<=9) {
-				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
-			}
-		} 
-			
-		if(sAction=="nextTo") {
-			fromBack=fromBack.substring(0,fromBack.length).split("-");
-			var monthBack = fromBack[1]
-			monthBack = parseInt(monthBack)+1;
-			var zero = "0";
-			if(monthBack==13) {
-				monthBack = 1;
-				yearBack = fromBack[0]
-				yearBack = parseInt(yearBack)+1;
-					
-				var check = document.getElementById("to_acct_yrmon").value = yearBack + "-" +  zero + monthBack ;
-			} else if(monthBack>=10 && monthBack<=12) {
-				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
-			} else if(monthBack>=1 && monthBack<=9) {
-				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
-			}
+//	function editDate(fromBack, sAction) {
+//		if (sAction=="backFrom") {
+//			fromBack=fromBack.substring(0,fromBack.length).split("-");
+//			var monthBack = fromBack[1]
+//			monthBack = monthBack.valueOf(monthBack)-1;
+//			var zero = "0";
+//			if(monthBack==0) {
+//				monthBack = 12;
+//				yearBack = fromBack[0]
+//				yearBack = yearBack.valueOf(yearBack)-1;
+//						
+//				var check = document.getElementById("fr_acct_yrmon").value = yearBack + "-" +  "" + monthBack ;
+//			} else if(monthBack>=10 && monthBack<=12) {
+//				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
+//			} else if(monthBack>=1 && monthBack<=9) {
+//				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
+//			}					
+//		}
+//			
+//		if (sAction=="nextFrom") {
+//			fromBack=fromBack.substring(0,fromBack.length).split("-");
+//			var monthBack = fromBack[1]
+//			monthBack = parseInt(monthBack)+1;
+//			var zero = "0";
+//			if(monthBack==13) {
+//				monthBack = 1;
+//				yearBack = fromBack[0]
+//				yearBack = parseInt(yearBack)+1;
+//					
+//				var check = document.getElementById("fr_acct_yrmon").value = yearBack + "-" +  zero + monthBack ;
+//			} else if(monthBack>=10 && monthBack<=12) {
+//				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
+//			} else if(monthBack>=1 && monthBack<=9) {
+//				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
+//			}					
+//		}
+//			
+//		if(sAction=="backTo") {
+//			fromBack=fromBack.substring(0,fromBack.length).split("-");
+//			var monthBack = fromBack[1]
+//			monthBack = monthBack.valueOf(monthBack)-1;
+//			var zero = "0";
+//			if(monthBack==0) {
+//				monthBack = 12;
+//				yearBack = fromBack[0]
+//				yearBack = yearBack.valueOf(yearBack)-1;
+//						
+//				var check = document.getElementById("to_acct_yrmon").value = yearBack + "-" +  "" + monthBack ;
+//			} else if(monthBack>=10 && monthBack<=12) {
+//				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
+//			} else if(monthBack>=1 && monthBack<=9) {
+//				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
+//			}
+//		} 
+//			
+//		if(sAction=="nextTo") {
+//			fromBack=fromBack.substring(0,fromBack.length).split("-");
+//			var monthBack = fromBack[1]
+//			monthBack = parseInt(monthBack)+1;
+//			var zero = "0";
+//			if(monthBack==13) {
+//				monthBack = 1;
+//				yearBack = fromBack[0]
+//				yearBack = parseInt(yearBack)+1;
+//					
+//				var check = document.getElementById("to_acct_yrmon").value = yearBack + "-" +  zero + monthBack ;
+//			} else if(monthBack>=10 && monthBack<=12) {
+//				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
+//			} else if(monthBack>=1 && monthBack<=9) {
+//				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
+//			}
+//		}
+//	}
+	
+	
+
+	function UF_addMonth(obj, iMonth) {
+		if (obj.value != "") {
+			obj.value = ComGetDateAdd(obj.value + "-01", "M", iMonth).substring(0, 7);
 		}
 	}
-	
-	
+
+	function GetCheckConditionPeriod() {
+		var formObj = document.form;
+		var frDt = formObj.fr_acct_yrmon.value.replaceStr("-", "") + "01";
+		var toDt = formObj.to_acct_yrmon.value.replaceStr("-", "") + "01";
+		if (ComGetDaysBetween(frDt, toDt) <= 0) {
+			return false;
+		}
+		return true;
+	}
