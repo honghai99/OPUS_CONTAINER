@@ -198,49 +198,44 @@ If there are more than two sheets per tab, additional sheet variables are specif
             return true;
         }
     	
-    	function sheet1_OnPopupClick(sheetObj,Row,Col){
-            switch (sheetObj.ColSaveName(Col)) {
-           	case "dev_dt" :
-    			var cal=new ComCalendarGrid();
-    			cal.select(sheetObj, Row, Col, 'yyyyMMdd');
-                break;
-            case "roles" :
-    			if(sheetObj.GetCellValue(Row,"ibflag")=="I" || sheetObj.GetCellValue(Row,"ibflag")=="U"){
-                	 ComShowCodeMessage('COM12151','Program');
-    			}else if(sheetObj.GetCellValue(Row,"ibflag")=="R" && sheetObj.GetCellValue(Row,"pgm_mnu_div_cd")=="01"){
-    				 ComShowCodeMessage('COM12190');
-                 }else{
-                	 alert('wait!!!!!!!!')// khong duoc dung
-        		       //noRtnPopup('progRoleMapping.do?pgm_no='+sheetObj.CellValue(Row,"pgm_no")+"&pgm_nm="+escape(sheetObj.CellValue(Row,"pgm_nm")),'width=700,height=474,left=200,top=100,menubar=0,status=0,scrollbars=0,resizable=1');
-                 }
-                 break;
-            }
-    	}
-    	
 //event fires when cell in sheet1 is changed
-   	function sheet1_OnChange(sheetObj,Row,Col){
-      	 if(Col == 2){ // dung switch case 
+   	function sheet1_OnChange(sheetObj, Row, Col, Value, OldValue, RaiseFlag){
+   		formObject = document.form;
+   		var colName=sheetObj.ColSaveName(Col); // get current column name that changed
+      	 if(colName == "err_msg_cd"){ // dung switch case
   			var code=sheetObj.GetCellValue(Row, Col);
   			var regex = /^[A-Z]{3}[0-9]{5}$/;
-  			console.log(regex.test(code));
-  			console.log(code.length);
   			if(regex.test(code) == true && code.length == 8) {
-	       	    for(var int=1; int < sheetObj.RowCount(); int++) {
-	   			var orlcode=sheetObj.GetCellValue(int, Col);
-	   			/* null 인 경우와 자기 자신은 비교할 필요가 없음 */
-	   				if(code != '' && int != Row && code == orlcode){
-	       				 //ComShowMessage("동일한 Message Code가 존재합니다.");
-	       				 ComShowCodeMessage('COM12115',code);
+	       	    for(var i=1; i < sheetObj.RowCount(); i++) {
+	       	    	var orlcode=sheetObj.GetCellValue(i, Col);
+	   				if(code != '' && i != Row && sheetObj.GetCellValue(Row, colName) == sheetObj.GetCellValue(i, colName)){
+	   					checkDuplicate(sheetObj, formObject, Row, Col); 					
 	       				 sheetObj.SetCellValue(Row, Col,"");
 	       				 return;
 	       			 }
 	       		 }
+	       	 
   			} else {
-  				ComShowCodeMessage('COM12115',code);
+  				ComShowCodeMessage('COM140001',code);
+  				sheetObj.SetCellValue(Row, Col,"");
   				return;
   			}
       	 }
        }
+   	
+   	function checkDuplicate(sheetObj, formObject, Row, Col) {
+   		formObject.f_cmd.value = COMMAND01;
+   		var param = FormQueryString(formObject) + "&err_dfmsg_cd=" + sheetObj.GetCellValue(Row, "err_msg_cd");
+   		var sXml = sheetObj.GetSearchData("GEN_TRN_0001GS.do", param, {sync:1});
+   		console.log("param", param);
+   		console.log("sXml", sXml);
+   		var flag = ComGetEtcData(sXml, "ISEXIST");
+   		if(flag = "Y") {
+   			ComShowCodeMessage('COM12115');
+   			sheetObj.SetCellValue(Row, Col,"");
+   			sheetObj.SelectCell(Row, Col);		
+   		}
+   	}
     	
     	function sheet1_OnSearchEnd(sheetObj, Code, Msg, StCode, StMsg) { 
          	ComOpenWait(false);
