@@ -1,19 +1,18 @@
 <%
 /*=========================================================
-*Copyright(c) 2022 CyberLogitec
-*@FileName : DOU_TRN_0003.jsp
-*@FileTitle : UI Practice 2
+*Copyright(c) 2020 CyberLogitec
+*@FileName : DOU_TRN_001.jsp
+*@FileTitle : Error Message Management
 *Open Issues :
 *Change history :
-*@LastModifyDate : 2022.04.06
+*@LastModifyDate : 2020.03.17
 *@LastModifier : 
 *@LastVersion : 1.0
-* 2022.04.06 
+* 2020.03.17 
 * 1.0 Creation
 =========================================================*/
 %>
 
-<%@ page import="com.clt.framework.component.rowset.DBRowSet"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="com.clt.framework.component.util.JSPUtil"%>
 <%@ page import="com.clt.framework.component.util.DateTime"%>
@@ -21,157 +20,121 @@
 <%@ page import="com.clt.framework.core.layer.event.GeneralEventResponse"%>
 <%@ page import="com.clt.framework.support.controller.html.CommonWebKeys"%>
 <%@ page import="com.clt.framework.support.view.signon.SignOnUserAccount"%>
-<%@ page import="com.clt.apps.opus.esm.clv.doutraining.errmsgmgmt.event.DouTrn0003Event"%>
+<%@ page import="com.clt.apps.opus.dou.doutraining.codemgmt.event.DouTrn0002Event"%>
 <%@ page import="org.apache.log4j.Logger" %>
 
 <%
-	DouTrn0003Event  event = null;					//PDTO(Data Transfer Object including Parameters)
+	DouTrn0002Event  event = null;					//PDTO(Data Transfer Object including Parameters)
 	Exception serverException   = null;			//서버에서 발생한 에러
-	String strErrMsg = "";						//에러메세지
-	int rowCount	 = 0;						//DB ResultSet 리스트의 건수
-	DBRowSet rowSet	  = null;
-	String laneComboObject = "";
-	String tradeComboObject = "";
-	String trdCd			= "";
-	String rlaneCd 			= "";
-	String successFlag 		= "";
-	String codeList  		= "";
-	String pageRows  		= "100";
-	String crrCds			= "";
-	String partner			= "";
-	String strUsr_id		= "";
-	String strUsr_nm		= "";
-	Logger log = Logger.getLogger("com.clt.apps.DouTraining.ErrMsgMgmt");
-
-	try {
-	   	SignOnUserAccount account=(SignOnUserAccount)session.getAttribute(CommonWebKeys.SIGN_ON_USER_ACCOUNT);
-		strUsr_id =	account.getUsr_id();
-		strUsr_nm = account.getUsr_nm();
-
-
-		event = (DouTrn0003Event)request.getAttribute("Event");
+	String strErrMsg = ""; //에러메세지
+	String successFlag = "";
+	String codeList = "";
+	String pageRows = "100";
+	String strSubSysCd		= "";
+	
+try {
+		event = (DouTrn0002Event)request.getAttribute("Event");
 		serverException = (Exception)request.getAttribute(CommonWebKeys.EXCEPTION_OBJECT);
 
 		if (serverException != null) {
 			strErrMsg = new ErrorHandler(serverException).loadPopupMessage();
-		} 
-		
-		// Add logic to extract data from server when loading initial screen..
+		}
+
 		// 초기화면 로딩시 서버로부터 가져온 데이터 추출하는 로직추가 ..
-
-
 		GeneralEventResponse eventResponse = (GeneralEventResponse) request.getAttribute("EventResponse");
-		partner = eventResponse.getETCData("jo_crr_cd");
-		rlaneCd = eventResponse.getETCData("rlane_cd");
-		trdCd = eventResponse.getETCData("trd_cd");
-	}catch(Exception e) {
+		strSubSysCd = eventResponse.getETCData("sub_sys_cd");
+	} catch (Exception e) {
 		out.println(e.toString());
 	}
 %>
-<html>
-<head>
-<title>UI Practice 2</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>Error Message Management</title>
 
 <script language="javascript">
-	var partner = "All|<%=partner%>";
-	var rlaneCd = "All|<%=rlaneCd%>";
-	var trdCD 	= "All|<%=trdCd%>";
-	
-	
+	var subSysCd = "<%=strSubSysCd%>";
 	function setupPage(){
 		var errMessage = "<%=strErrMsg%>";
 		if (errMessage.length >= 1) {
-			ComShowMessage(errMessage);
+			showErrMessage(errMessage);
 		} // end if
 		loadPage();
-		
-		//default time 
-		today=new Date();
-	    var year=today.getFullYear();
-	    var lastMonth=today.getMonth();
-	   	var thisMonth=today.getMonth()+1;
-	   	if(lastMonth<10) {
-	   		var prev = year + "-" +"0"+ lastMonth;
-	   		var now = year + "-" +"0"+ thisMonth;
-	   	} else {
-	   		var prev = year + "-" + lastMonth;
-	   		var now = year + "-" + thisMonth;
-	   	}
-	   	
-	   	
-	    document.getElementById("fr_acct_yrmon").value = prev ;
-		document.getElementById("to_acct_yrmon").value = now ;
 	}
-
 </script>
-</head>
 
-<body onLoad="setupPage();">
-<form name="form">
+
+
+<form name="form1">
 <input type="hidden" name="f_cmd">
-<input type="hidden" name="pagerows">
+<input type="hidden" name="codeid">
+<input type="hidden" name="sub_sys_cd">
 
-<!-- 개발자 작업	-->
 
-	<div class="page_title_area clear">
-		<h2 class="page_title"><button type="button"><span id="title"></span></button></h2>
+<!-- page_title_area(S) -->
+<div class="page_title_area clear">
+	
+	<!-- page_title(S) -->
+	<h2 class="page_title"><button type="button"><span id="title"></span></button></h2>
+	<!-- page_title(E) -->
 		<div class="opus_design_btn">
-		   <button type="button" class="btn_accent" name="btn_Retrieve" id="btn_Retrieve">Retrieve</button><!--
-		   --><button type="button" class="btn_normal" name="btn_New" id="btn_New">New</button><!--
-		   --><button type="button" class="btn_normal" name="btn_DownExcel" id="btn_DownExcel">Down Excel</button><!--
-		   --><button type="button" class="btn_normal" name="btn_DownExcel2" id="btn_DownExcel2">Down Excel 2</button>
+			 <button type="button" class="btn_accent" name="btn_Retrieve" id="btn_Retrieve">Retrieve</button><!-- 
+			  --> <button type="button" class="btn_normal" name="btn_Save" id="btn_Save">Save</button>
 		</div>
-		
-	    <div class="location">
+	   	<div class="location">
+			<!-- location 내용 동적생성 (별도 코딩 불필요) -->
 	        <span id="navigation"></span>
-	    </div>
+	   	</div>
+   	<!-- page_location(E) -->
+</div>
+<!-- page_title_area(E) -->
+
+<div class="wrap_search">
+	<div class="opus_design_inquiry wFit">   <!-- no TAB  -->
+		<table class="search" border="0" style="width: 100%;">
+			<tr class="h23">
+				<th width="70">Subsystem</th>
+				<!-- td width="130"><input name="subsystem" type="text" style="width: 100" onKeyPress="javascript:ComKeyOnlyAlphabet('uppernum');"></td-->
+				<!--  <td><script language="javascript">ComComboObject('subsystem', 1, 120, 0);</script></td>-->
+				<td style="width: 146px; "><input type="text" name="subsystem" style="width: 150" value=""></td>
+				<td width="50" style="width: 43px; height: 15px">Cd Id
+				</td>
+				<td><input type="text" name="code_val" style="width: 150" value=""></td>
+			</tr>
+		</table>
 	</div>
-	
-	<div class="wrap_search">
-		<div class="opus_design_inquiry">
-		    <table>
-		        <tbody>
-					<tr>
-						<th width="">Year month</th>					
-							<td><input type="text" style="width:80px;" class="input1" dataformat="ym" maxlength="8" name="fr_acct_yrmon" value="" id="fr_acct_yrmon" cofield="btn_from_back"/> 
-							   <button type="button" class="btn_left" name="btn_from_back" id="btn_from_back"></button><!--  
-							   --><button type="button" class="btn_right" name="btn_from_next" id="btn_from_next"></button>~  
-							   <input type="text" style="width:80px;" class="input1" maxlength="8" dataformat="ym"  name="to_acct_yrmon" value="" id="to_acct_yrmon" cofield="btn_to_next" />
-							   <button type="button" class="btn_left" name="btn_to_back" id="btn_to_back"></button><!--  
-							   --><button type="button" class="btn_right" name="btn_to_next" id="btn_to_next"></button></td>
-						<th width="">Partner</th>
-							<td> <script type="text/javascript">ComComboObject('jo_crr_cd');</script></td>						
-						<th width="">Lane</th>
-							<td> <script type="text/javascript">ComComboObject('rlane_cd');</script></td>
-						<th width="">Trade</th>
-							<td> <script type="text/javascript">ComComboObject('trd_cd');</script></td>
-					</tr> 	
-				</tbody>
-			</table>
+</div>
+
+<div class="wrap_result">
+		
+	<!-- opus_grid_design_btn(S) -->
+	<div class="opus_design_grid">
+		<h3 class="title_design">Master</h3>
+		<!-- opus_grid_btn(S) -->
+		<div class="opus_design_btn">
+			<button type="button" class="btn_normal" name="btn_rowadd_mst" id="btn_rowadd_mst">Row Add</button><!-- 
+			 --><button type="button" class="btn_normal" name="btn_rowdelete_mst" id="btn_rowdelete_mst">Row Delete</button>
 		</div>
-	</div>
-	
-	<div class="wrap_result">
-		<div class="opus_design_grid">
-			<h3 class="title_design"><button type="button" class="btn_accent" name="summary" id="summary">Summary</button><!----><button type="button" class="btn_accent" name="detail" id="detail">Detail</button></h3>
-		<div class="opus_design_grid">
+		<!-- opus_grid_btn(E) -->
 	</div>
 	
 	<script language="javascript">ComSheetObject('sheet1');</script>
-		</div>
-	</div>
+	<!-- opus_grid_design_btn(E) -->
+	
 	<div class="opus_design_inquiry"><table class="line_bluedot"><tr><td></td></tr></table></div>
-	<div class="wrap_result">
-		<div class="opus_design_grid">
-			
-		<script language="javascript">ComSheetObject('sheet2');</script>
+	
+	<!-- opus_grid_design_btn(S) -->
+	<div class="opus_design_grid">
+		<h3 class="title_design">Detail</h3>
+		<!-- opus_grid_btn(S) -->
+		<div class="opus_design_btn">
+			<button type="button" class="btn_normal" name="btn_rowadd_dtl" id="btn_rowadd_dtl">Row Add</button><!-- 
+			 --><button type="button" class="btn_normal" name="btn_rowdelete_dtl" id="btn_rowdelete_dtl">Row Delete</button>
 		</div>
+		<!-- opus_grid_btn(E) -->
 	</div>
+	
+	<script language="javascript">ComSheetObject('sheet2');</script>
+	<!-- opus_grid_design_btn(E) -->
+</div>
 
-
-
-<!-- 개발자 작업  끝 -->
 </form>
-</body>
-</html>
