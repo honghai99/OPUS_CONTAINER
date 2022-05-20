@@ -87,22 +87,22 @@
 <!-- 개발자 작업	-->
 	<div class="page_title_area clear">
 		
-			<!-- page_title(S) -->
+		<!-- page_title(S) -->
 		<h2 class="page_title"><button type="button"><span id="title"></span></button></h2>
 		<!-- page_title(E) -->
 		
 		<!-- opus_design_btn (S) -->
 		<div class="opus_design_btn">
-			<button class="btn_accent" name="btn_Retrieve" id="btn_Retrieve" type="button">Search</button><!-- 
+		    <button class="btn_accent" name="btn_Retrieve" id="btn_Retrieve" type="button">Search</button><!-- 
 		    --><button class="btn_normal" name="btn_New" id="btn_New" type="button">New</button><!--
-			--><button class="btn_normal" name="btn_Save" id="btn_Save" type="button">Save</button><!--
-			--><button class="btn_normal" name="btn_DownExcel" id=btn_DownExcel type="button">Down Excel</button>
+		    --><button class="btn_normal" name="btn_Save" id="btn_Save" type="button">Save</button><!--
+		    --><button class="btn_normal" name="btn_DownExcel" id=btn_DownExcel type="button">Down Excel</button>
 		</div>
 		<!-- opus_design_btn (E) -->
 	
 		<!-- page_location(S) -->
 		<div class="location">	
-			<span id="navigation"></span>
+		    <span id="navigation"></span>
 		</div>
 		<!-- page_location(E) -->
 	</div>
@@ -111,7 +111,7 @@
 		<!-- opus_design_inquiry(S) -->
 		<div class="opus_design_inquiry wFit">
 			<table>
-				<colgroup>
+			   <colgroup>
 					<col width="70" />				
 					<col width="100" />						
 					<col width="70" />	
