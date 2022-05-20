@@ -39,37 +39,39 @@
 	var comboObjects = new Array();
 	
 	function initControl() {
-     	var formObject=document.form;
-         //Axon 이벤트 처리1. 이벤트catch(개발자변경)
-         axon_event.addListenerFormat('blur', 'keypressFormat', formObject);
-     }
+		var formObject=document.form;
+		 //Axon 이벤트 처리1. 이벤트catch(개발자변경)
+		 axon_event.addListenerFormat('blur', 'keypressFormat', formObject);
+	 }
 	
 	//check valid number in vendor code
-    function keypressFormat() {
-    	obj = ComGetEvent();	
-        if(obj.attributes.dataformat.nodeValue == null) return;
-    	    window.defaultStatus=obj.attributes.dataformat.nodeValue;
-    	    switch(obj.name) {
-	        case "s_vndr_seq":
-	        	ComEditFormating();
-	            break;
-    	    }
-      }
+	function keypressFormat() {
+		obj = ComGetEvent();	
+		if(obj.attributes.dataformat.nodeValue == null) return;
+		    window.defaultStatus=obj.attributes.dataformat.nodeValue;
+		    switch(obj.name) {
+			case "s_vndr_seq":
+				ComEditFormating();
+			    break;
+		    }
+	 }
     
 	
 	
 	//ComSheetObject from JSP call this function
 	function setSheetObject(sheet_obj) {
-		sheetObjects[sheetCnt++] = sheet_obj;
+		sheetObjects[sheetCnt++] = sheet_obj; //đổi sang if, switch case
 	}
 	
 	//ComComboObject from JSP call this function
 	function setComboObject(combo_obj) {
-		comboObjects[comboCnt++] = combo_obj;
+		comboObjects[comboCnt++] = combo_obj; //đổi sang if, switch case
 	}
+	/**
+	*set config for sheet/ combobox
+	*/
 	
-	//set config for sheet/ combobox
-    function loadPage() {
+    function loadPage() { //check format
     	var formObject = document.form;
     	//config sheet
     	for(i = 0; i<sheetObjects.length; i++) {
@@ -119,12 +121,12 @@
 				case "btns_calendar1":
 				case "btns_calendar2": 
 					var cal=new ComCalendar();
-	                if(srcName == "btns_calendar1"){
-	                    cal.select(formObject.s_cre_dt_fm, 'yyyy-MM-dd');
-	                }else{
-	                    cal.select(formObject.s_cre_dt_to, 'yyyy-MM-dd');
-	                }
-	                break;
+					if(srcName == "btns_calendar1"){
+					    cal.select(formObject.s_cre_dt_fm, 'yyyy-MM-dd'); //chuyển lên btns_calendar1
+					}else{
+					    cal.select(formObject.s_cre_dt_to, 'yyyy-MM-dd');
+					}
+					break;
 				
 			}
 		} catch(e) {
@@ -141,9 +143,9 @@
 		switch (comboNo) {
 		case 1:
 			with (comboObj) {
-			SetMultiSelect(1); //could select muti box in combo box
-	        SetDropHeight(200); // set the height for drop list
-	        ValidChar(2,1); //input upper case, numbers
+			SetMultiSelect(1); //could select multi box in combo box
+			SetDropHeight(200); // set the height for drop list
+			ValidChar(2,1); //input upper case, numbers, unncessary 
 			}
 			
 			var comboItems = carrier.split("|"); // split all components to array
@@ -225,7 +227,7 @@
 				             { Type : "Text",     Hidden : 0, Width : 150, Align : "Center", ColMerge : 0, SaveName : "cre_dt", 	 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0 				  }, //create date
 				             { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left",   ColMerge : 0, SaveName : "cre_usr_id",  KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0				  }, //create user ID
 				             { Type : "Text", 	  Hidden : 0, Width : 150, Align : "Center", ColMerge : 0, SaveName : "upd_dt", 	 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0  			  }, //update date
-				             { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left", 	 ColMerge : 0, SaveName : "upd_usr_id",  KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0				  } //update user id
+				             { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left",   ColMerge : 0, SaveName : "upd_usr_id",  KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0				  } //update user id
 				             ];
 				//configure functionality of each column into JSON format.
 				InitColumns(cols);
@@ -238,7 +240,7 @@
 				SetColProperty("trd_cd", 	  { AcceptKeys : "E|N", InputCaseSensitive : 1 });
 				SetColProperty("rlane_cd", 	  { ComboText  : lane,  ComboCode : lane });
 				SetColProperty("delt_flg", 	  { ComboText  : "N|Y", ComboCode : "N|Y" });
-				resizeSheet();
+				resizeSheet(); // combine into 1 function
 			}
 			break;
 		}
@@ -279,9 +281,9 @@
 				formObj.f_cmd.value = MULTI;
 				sheetObj.DoSave("DOU_TRN_0004GS.do", FormQueryString(formObj));
 			}
-			else
-
-			ComShowCodeMessage("COM132910");
+			else {
+				ComShowCodeMessage("COM132910");
+			}
 			break;
 		case IBINSERT: //for row add button
 			sheetObj.DataInsert(-1); //new row will be added at the bottom
