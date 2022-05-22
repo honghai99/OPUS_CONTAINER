@@ -75,8 +75,7 @@
 	 * ComSheetObject from JSP call this function to assign sheet object to
 	 * specific sheet Array
 	 * 
-	 * @param {object}
-	 *            sheet Object
+	 * @param {object} sheet Object
 	 * 
 	 */
 	function setSheetObject(sheet_obj) {
@@ -263,7 +262,7 @@
 						     { Type : "Status",   Hidden : 1, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "ibflag" }, 
 						     { Type : "CheckBox", Hidden : 0, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "del_chk" }, 
 						     { Type : "Text", 	  Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "jo_crr_cd", 	 KeyField : 1, Format : "", UpdateEdit : 0, InsertEdit : 1,  EditLen: 3   }, //carrier
-						     { Type : "Combo", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "rlane_cd",    KeyField : 1, Format : "", UpdateEdit : 0, InsertEdit : 1,  EditLen: 5   }, //rev lane
+						     { Type : "Combo", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "rlane_cd",    KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1,  EditLen: 5   }, //rev lane
 						     { Type : "Text",	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "vndr_seq",    KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 6   }, //vendor code
 						     { Type : "Text", 	  Hidden : 0, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "cust_cnt_cd", KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 2   }, //Customer code
 						     { Type : "Text", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "cust_seq",    KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 6   }, //customer code
@@ -282,7 +281,7 @@
 					SetColProperty("vndr_seq",    { AcceptKeys : "N"});
 					SetColProperty("cust_cnt_cd", { AcceptKeys : "E",   InputCaseSensitive : 1});
 					SetColProperty("cust_seq",	  { AcceptKeys : "N"});
-					SetColProperty("trd_cd", 	  { AcceptKeys : "E|N", InputCaseSensitive : 1 });
+					SetColProperty("trd_cd", 	  { AcceptKeys : "E", InputCaseSensitive : 1 });
 					SetColProperty("rlane_cd", 	  { ComboText  : lane,  ComboCode : lane });
 					SetColProperty("delt_flg", 	  { ComboText  : "N|Y", ComboCode : "N|Y" });
 					resizeSheet();
@@ -404,36 +403,36 @@
 	 * @param {boolean} RaiseFlag
 	 * 
 	 */
-	function sheet1_OnChange(sheetObj, Row, Col, Value, OldValue, RaiseFlag) {
-		var formObject = document.form; 
-		var colName=sheetObj.ColSaveName(Col); //get current column name that changed
-		
-		if(colName == "jo_crr_cd" || colName == "rlane_cd"){//check duplicate data
-			if(sheetObj.GetCellValue(Row,"jo_crr_cd") != "" && sheetObj.GetCellValue(Row,"rlane_cd") != ""){
-				//check on UI Frist
-				var headerRowNum = sheetObj.HeaderRows();
-				for(var i = headerRowNum; i <= sheetObj.RowCount(); i++){
-					if(i != Row && sheetObj.GetCellValue(Row,"jo_crr_cd") == sheetObj.GetCellValue(i,"jo_crr_cd")
-							&& sheetObj.GetCellValue(Row,"rlane_cd") == sheetObj.GetCellValue(i,"rlane_cd")){
-						ComShowCodeMessage("COM12115");
-						sheetObj.SetCellValue(Row, Col,0);
-						sheetObj.SelectCell(Row, Col);
-						return;
-					}
-				}
-				//check on Service side
-				formObject.f_cmd.value		= COMMAND01;
-				var param = FormQueryString(formObject) + "&jo_crr_cd=" + sheetObj.GetCellValue(Row,"jo_crr_cd") + "&rlane_cd=" + sheetObj.GetCellValue(Row,"rlane_cd");
-				var sXml  = sheetObj.GetSearchData("DOU_TRN_0004GS.do", param,{sync:1});
-				var flag  = ComGetEtcData(sXml, "ISEXIST");
-				if(flag == 'Y'){
-					ComShowCodeMessage("COM12115");
-					sheetObj.SetCellValue(Row, Col,OldValue,0);
-					sheetObj.SelectCell(Row, Col);
-				}
-			}
-		}
-	}
+//	function sheet1_OnChange(sheetObj, Row, Col, Value, OldValue, RaiseFlag) {
+//		var formObject = document.form; 
+//		var colName=sheetObj.ColSaveName(Col); //get current column name that changed
+//		
+//		if(colName == "jo_crr_cd" || colName == "rlane_cd"){//check duplicate data
+//			if(sheetObj.GetCellValue(Row,"jo_crr_cd") != "" && sheetObj.GetCellValue(Row,"rlane_cd") != ""){
+//				//check on UI Frist
+//				var headerRowNum = sheetObj.HeaderRows();
+//				for(var i = headerRowNum; i <= sheetObj.RowCount(); i++){
+//					if(i != Row && sheetObj.GetCellValue(Row,"jo_crr_cd") == sheetObj.GetCellValue(i,"jo_crr_cd")
+//							&& sheetObj.GetCellValue(Row,"rlane_cd") == sheetObj.GetCellValue(i,"rlane_cd")){
+//						ComShowCodeMessage("COM12115");
+//						sheetObj.SetCellValue(Row, Col,0);
+//						sheetObj.SelectCell(Row, Col);
+//						return;
+//					}
+//				}
+//				//check on Service side
+//				formObject.f_cmd.value		= COMMAND01;
+//				var param = FormQueryString(formObject) + "&jo_crr_cd=" + sheetObj.GetCellValue(Row,"jo_crr_cd") + "&rlane_cd=" + sheetObj.GetCellValue(Row,"rlane_cd");
+//				var sXml  = sheetObj.GetSearchData("DOU_TRN_0004GS.do", param,{sync:1});
+//				var flag  = ComGetEtcData(sXml, "ISEXIST");
+//				if(flag == 'Y'){
+//					ComShowCodeMessage("COM12115");
+//					sheetObj.SetCellValue(Row, Col,OldValue,0);
+//					sheetObj.SelectCell(Row, Col);
+//				}
+//			}
+//		}
+//	}
 
 	/**
 	 * Event fires when partner combobox is clicked 
@@ -524,8 +523,6 @@
 					ComShowCodeMessage("COM132909");
 					return false;
 				}	
-				break;
-			case IBSAVE:
 				break;
 		}
 		return true;
