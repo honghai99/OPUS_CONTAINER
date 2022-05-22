@@ -61,21 +61,15 @@ public class DOU_TRN_0004HTMLAction extends HTMLActionSupport {
 			errMsgVO.setVndrSeq(JSPUtil.getParameter(request, "s_vndr_seq", ""));  //get param lane
 			errMsgVO.setCreDtFm(JSPUtil.getParameter(request, "s_cre_dt_fm", ""));
 			errMsgVO.setCreDtTo(JSPUtil.getParameter(request, "s_cre_dt_to", ""));
-			System.out.println(errMsgVO.getCreDtFm());
-			System.out.println(errMsgVO.getCreDtTo());
-			System.out.println(errMsgVO.getCreDt());
 			event.setErrMsgVO(errMsgVO); 
 		} else if(command.isCommand(FormCommand.COMMAND01)) {
 			event.setErrMsgVO((ErrMsgVO)getVO(request, ErrMsgVO.class,"")); //java reflection
 		}
 	
-
 		return  event;
 	}
 
 	/**
-	 * HttpRequest의 attribute에 업무시나리오 수행결과 값 저장<br>
-	 * ServiceCommand에서 View(JSP)로 실행결과를 전송하는 ResultSet을 request에 셋팅<br>
 	 * Saving the value of the task scenario execution result in the attribute of HttpRequest<br>
 	 * Setting the ResultSet that transmits the execution result from ServiceCommand to View (JSP) in the request<br>
 	 * @param request HttpServletRequest HttpRequest
