@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.asprise.util.tiff.C;
 import com.clt.apps.opus.esm.clv.newgen.errmsgmgmt.basic.ErrMsgMgmtBCImpl;
 import com.clt.apps.opus.esm.clv.newgen.errmsgmgmt.vo.ErrMsgVO;
 import com.clt.framework.component.message.ErrorHandler;
@@ -324,6 +325,33 @@ public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 		}
 		return list;
 	}
+	
+	public List<ErrMsgVO> checkDuplicate(ErrMsgVO errMsgVO) throws DAOException,Exception {
+		DBRowSet dbRowset = null;
+		List<ErrMsgVO> list = new ArrayList<ErrMsgVO>();
+		//query parameter
+		Map<String, Object> param = new HashMap<String, Object>();
+		//velparam
+		Map<String, Object> velParam = new HashMap<String, Object>();
+		
+		try {
+			if(errMsgVO != null) {
+				Map<String, String> mapVO = errMsgVO.getColumnValues();
+				param.putAll(mapVO);
+				velParam.putAll(mapVO);
+			}
+			dbRowset = new SQLExecuter("").executeQuery((ISQLTemplate)new CheckDuplicateCarrierRSQL(), param, velParam);
+			list = (List)RowSetUtil.rowSetToVOs(dbRowset, ErrMsgVO .class);
+		} catch (SQLException se) {
+			log.error(se.getMessage(), se);
+			throw new DAOException(new ErrorHandler(se).getMessage());
+		} catch (Exception ex) {
+			log.error(ex.getMessage(), ex);
+			throw new DAOException(new ErrorHandler(ex).getMessage());
+		}
+		return list;
+	}
+	
 	
 	
 }
