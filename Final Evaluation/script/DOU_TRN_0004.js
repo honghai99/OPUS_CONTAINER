@@ -19,14 +19,14 @@
  ***************************************************************************************/
 
 	/**
-        * @fileoverview It is a JavaScript file commonly used in work, and calendar-related functions are defined..
-        * @author Hai To
-        */
+	* @fileoverview It is a JavaScript file commonly used in work, and calendar-related functions are defined..
+	* @author Hai To
+	*/
 
 	/**
-        * @extends 
-        * @class DOU_TRN_0004 : DOU_TRN_0004 Defines the work script used in the screen for creation.
-        */
+	* @extends 
+	* @class DOU_TRN_0004 : DOU_TRN_0004 Defines the work script used in the screen for creation.
+	*/
 	//set sheet objects in an array
 	var sheetObjects=new Array();   
 	//counting for multiple sheets
@@ -91,7 +91,6 @@
 	 *  ComComboObject from JSP call this function
 	 *  @param {object} combo Object
 	 */
-
 	function setComboObject(combo_obj) {
 		comboObjects[0] = combo_obj;
 		//comboObjects[comboCnt++] = combo_obj;
