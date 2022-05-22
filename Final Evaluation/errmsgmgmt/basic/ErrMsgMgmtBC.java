@@ -19,7 +19,6 @@ import com.clt.apps.opus.esm.clv.newgen.errmsgmgmt.vo.ErrMsgVO;
 
 /**
  * ALPS-Newgen Business Logic Command Interface<br>
- * - ALPS-Newgen에 대한 비지니스 로직에 대한 인터페이스<br>
  *
  * @author Hai To
  * @since J2EE 1.6
@@ -28,7 +27,6 @@ import com.clt.apps.opus.esm.clv.newgen.errmsgmgmt.vo.ErrMsgVO;
 public interface ErrMsgMgmtBC {
 
 	/**
-	 * [비즈니스대상]을 [행위] 합니다.<br>
 	 * 
 	 * @param ErrMsgVO	errMsgVO
 	 * @return List<ErrMsgVO>
@@ -36,8 +34,7 @@ public interface ErrMsgMgmtBC {
 	 */
 	public List<ErrMsgVO> searchErrMsgVO(ErrMsgVO errMsgVO) throws EventException;
 	
-	/**
-	 * [비즈니스대상]을 [행위] 합니다.<br>
+	/**	 
 	 * 
 	 * @param ErrMsgVO[] errMsgVO
 	 * @param account SignOnUserAccount
@@ -45,8 +42,28 @@ public interface ErrMsgMgmtBC {
 	 */
 	public void manageErrMsgVO(ErrMsgVO[] errMsgVO,SignOnUserAccount account) throws EventException;
 	
-	
+	/**
+	 * Search carrier for combo box
+	 * @param errMsgVO
+	 * @return
+	 * @throws EventException
+	 */
 	public List<ErrMsgVO> searchCarrier(ErrMsgVO errMsgVO) throws EventException;
 	
+	/**
+	 * search lane for combobox
+	 * @param errMsgVO
+	 * @return
+	 * @throws EventException
+	 */
 	public List<ErrMsgVO> searchLane(ErrMsgVO errMsgVO) throws EventException;
+	
+	/**
+	 * 
+	 * @param errMsgVO
+	 * @return
+	 * @throws EventException
+	 */
+	public List<ErrMsgVO> checkDuplicate(ErrMsgVO errMsgVO) throws EventException;
+	
 }
