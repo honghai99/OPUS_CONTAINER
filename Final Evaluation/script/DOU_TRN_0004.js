@@ -264,17 +264,17 @@
 					var cols = [ 
 						     { Type : "Status",   Hidden : 1, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "ibflag" }, 
 						     { Type : "CheckBox", Hidden : 0, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "del_chk" }, 
-						     { Type : "Text", 	  Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "jo_crr_cd", 	 KeyField : 1, Format : "", UpdateEdit : 0, InsertEdit : 1,  EditLen: 3   }, //carrier
-						     { Type : "Combo", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "rlane_cd",    KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1,  EditLen: 5   }, //rev lane
-						     { Type : "Text",	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "vndr_seq",    KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 6   }, //vendor code
-						     { Type : "Text", 	  Hidden : 0, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "cust_cnt_cd", KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 2   }, //Customer code
-						     { Type : "Text", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "cust_seq",    KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 6   }, //customer code
-						     { Type : "Text",     Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "trd_cd", 	 KeyField : 0, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 3   }, //trade
-						     { Type : "Combo",    Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "delt_flg", 	 KeyField : 0, Format : "", UpdateEdit : 1, InsertEdit : 1				  }, //delete flag
-						     { Type : "Text",     Hidden : 0, Width : 150, Align : "Center", ColMerge : 0, SaveName : "cre_dt", 	 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0 				  }, //create date
-						     { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left",   ColMerge : 0, SaveName : "cre_usr_id",  KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0				  }, //create user ID
-						     { Type : "Text", 	  Hidden : 0, Width : 150, Align : "Center", ColMerge : 0, SaveName : "upd_dt", 	 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0  			  }, //update date
-						     { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left", 	 ColMerge : 0, SaveName : "upd_usr_id",  KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0				  } //update user id
+						     { Type : "Text", 	  Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "jo_crr_cd", 	     KeyField : 1, Format : "", UpdateEdit : 0, InsertEdit : 1,  EditLen: 3   }, //carrier
+						     { Type : "Combo", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "rlane_cd",    	 KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1,  EditLen: 5   }, //rev lane
+						     { Type : "Text",	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "vndr_seq",    	 KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 6   }, //vendor code
+						     { Type : "Text", 	  Hidden : 0, Width : 50,  Align : "Center", ColMerge : 0, SaveName : "cust_cnt_cd", 	 KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 2   }, //Customer code
+						     { Type : "Text", 	  Hidden : 0, Width : 100, Align : "Center", ColMerge : 0, SaveName : "cust_seq",    	 KeyField : 1, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 6   }, //customer code
+						     { Type : "Text",     Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "trd_cd", 	 	 KeyField : 0, Format : "", UpdateEdit : 1, InsertEdit : 1 , EditLen: 3   }, //trade
+						     { Type : "Combo",    Hidden : 0, Width : 70,  Align : "Center", ColMerge : 0, SaveName : "delt_flg", 		 KeyField : 0, Format : "", UpdateEdit : 1, InsertEdit : 1		  }, //delete flag
+						     { Type : "Text",     Hidden : 0, Width : 150, Align : "Center", ColMerge : 0, SaveName : "cre_dt", 		 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0 		  }, //create date
+						     { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left",   ColMerge : 0, SaveName : "cre_usr_id",  	 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0		  }, //create user ID
+						     { Type : "Text", 	  Hidden : 0, Width : 150, Align : "Center", ColMerge : 0, SaveName : "upd_dt", 		 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0  		  }, //update date
+						     { Type : "Text", 	  Hidden : 0, Width : 180, Align : "Left",   ColMerge : 0, SaveName : "upd_usr_id",  	 KeyField : 0, Format : "", UpdateEdit : 0, InsertEdit : 0		  } //update user id
 						     ];
 					//configure functionality of each column into JSON format.
 					InitColumns(cols);
@@ -376,15 +376,15 @@
 	 * Get current date, month, year for date from, date to (within a month)
 	 */
 	function getCurrentDate() {
-		today=new Date();
-		var thisYear=today.getFullYear(); //get current year
-	    	var thisDate = today.getDate(); // get current date
-	   	var thisMonth=today.getMonth()+1; // because it counts from 0 so add 1
+		today = new Date();
+		var thisYear  = today.getFullYear(); //get current year
+	    	var thisDate  = today.getDate(); // get current date
+	   	var thisMonth = today.getMonth()+1; // because it counts from 0 so add 1
 	   	var firstDate = "01"; // first day of a month
-	   	if(thisMonth<10 ) { // if date or month < 10, add "0" before value	   		
+	   	if(thisMonth < 10) { // if date or month < 10, add "0" before value	   		
 	   		thisMonth = "0" + thisMonth;
 	   	} 
-	   	if(thisDate<10) {
+	   	if(thisDate < 10) {
 	   		thisDate = "0" + thisDate;
 	   	}
 	   	
@@ -395,47 +395,6 @@
 		document.getElementById("s_cre_dt_fm").value = prev ;
 		document.getElementById("s_cre_dt_to").value = now ;
 	}
-	
-	/**
-	 * Event fires when content in sheet1 is modified
-	 * @param {object}  sheetObj
-	 * @param {int} 	Row
-	 * @param {int}		Col
-	 * @param {String}  Value
-	 * @param {String}  OldValue
-	 * @param {boolean} RaiseFlag
-	 * 
-	 */
-//	function sheet1_OnChange(sheetObj, Row, Col, Value, OldValue, RaiseFlag) {
-//		var formObject = document.form; 
-//		var colName=sheetObj.ColSaveName(Col); //get current column name that changed
-//		
-//		if(colName == "jo_crr_cd" || colName == "rlane_cd"){//check duplicate data
-//			if(sheetObj.GetCellValue(Row,"jo_crr_cd") != "" && sheetObj.GetCellValue(Row,"rlane_cd") != ""){
-//				//check on UI Frist
-//				var headerRowNum = sheetObj.HeaderRows();
-//				for(var i = headerRowNum; i <= sheetObj.RowCount(); i++){
-//					if(i != Row && sheetObj.GetCellValue(Row,"jo_crr_cd") == sheetObj.GetCellValue(i,"jo_crr_cd")
-//							&& sheetObj.GetCellValue(Row,"rlane_cd") == sheetObj.GetCellValue(i,"rlane_cd")){
-//						ComShowCodeMessage("COM12115");
-//						sheetObj.SetCellValue(Row, Col,0);
-//						sheetObj.SelectCell(Row, Col);
-//						return;
-//					}
-//				}
-//				//check on Service side
-//				formObject.f_cmd.value		= COMMAND01;
-//				var param = FormQueryString(formObject) + "&jo_crr_cd=" + sheetObj.GetCellValue(Row,"jo_crr_cd") + "&rlane_cd=" + sheetObj.GetCellValue(Row,"rlane_cd");
-//				var sXml  = sheetObj.GetSearchData("DOU_TRN_0004GS.do", param,{sync:1});
-//				var flag  = ComGetEtcData(sXml, "ISEXIST");
-//				if(flag == 'Y'){
-//					ComShowCodeMessage("COM12115");
-//					sheetObj.SetCellValue(Row, Col,OldValue,0);
-//					sheetObj.SelectCell(Row, Col);
-//				}
-//			}
-//		}
-//	}
 
 	/**
 	 * Event fires when partner combobox is clicked 
@@ -531,23 +490,5 @@
 		return true;
 	}
 
-//	/**
-//	 * For additional issue 
-//	 * @param sheetObj
-//	 * @param Row
-//	 * @param Col
-//	 */
-//	function sheet1_OnPopupClick(sheetObj, Row, Col) {
-//		var formObject = document.form;
-//		switch (sheetObj.ColSaveName(Col)) {
-//			case "trd_cd":
-//				var data = sheetObjects[0].GetCellValue(Col, 1);
-//				var sUrl = "/opuscntr/DOU_TRN_0004PU.do";
-//				doActionIBSheet(sheetObjects[0], formObject, IBSEARCH);
-//				//				ComOpenPopup(sUrl, 1000, 800,"get_value", "0,0", true);
-//				ComOpenWindowCenter('DOU_TRN_0004PU.do', '', 800, 600);
-//		
-//				break;
-//		}
-//	}
+
 	
