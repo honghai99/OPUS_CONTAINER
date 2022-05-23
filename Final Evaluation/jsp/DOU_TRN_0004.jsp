@@ -25,9 +25,9 @@
 
 <%
 	DouTrn0004Event  event = null;					//PDTO(Data Transfer Object including Parameters)
-	Exception serverException   = null;			//서버에서 발생한 에러
-	String strErrMsg = "";						//에러메세지
-	int rowCount	 = 0;						//DB ResultSet 리스트의 건수
+	Exception serverException   = null;				//error occurred on the server
+	String strErrMsg = "";						//error message
+	int rowCount	 = 0;						//DB ResultSet number of list
 	
 	String lane        = "";
 	String carrier     = "";
@@ -63,7 +63,6 @@
 	}
 %>
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <script language="javascript">
 	var carrier = "All|<%=carrier%>";
