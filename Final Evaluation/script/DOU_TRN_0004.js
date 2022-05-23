@@ -28,13 +28,13 @@
 	* @class DOU_TRN_0004 : DOU_TRN_0004 Defines the work script used in the screen for creation.
 	*/
 	//set sheet objects in an array
-	var sheetObjects=new Array();   
+	var sheetObjects = new Array();   
 	//counting for multiple sheets
-	var sheetCnt=0;	
+	var sheetCnt = 0;	
 	//counting for multiple combo-boxes
 	var comboCnt = 0;
 	//receive the event from screen that is clicked
-	document.onclick=processButtonClick;
+	document.onclick = processButtonClick;
 	//set combo box objects in an array
 	var comboObjects = new Array();
 	
