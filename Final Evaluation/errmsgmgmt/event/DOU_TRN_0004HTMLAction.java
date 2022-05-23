@@ -25,9 +25,9 @@ import com.clt.apps.opus.esm.clv.newgen.errmsgmgmt.vo.ErrMsgVO;
 
 /**
  * HTTP Parser<br>
- * - com.clt.apps.opus.esm.clv.newgen 화면을 통해 서버로 전송되는 HTML DOM 객체의 Value를 자바 변수로 Parsing<br>
- * - Parsing 한 정보를 Event로 변환, request에 담아 newgenSC로 실행요청<br>
- * - newgenSC에서 View(JSP)로 실행결과를 전송하는 EventResponse를 request에 셋팅<br>
+ * - Parsing the Value of the HTML DOM object sent to the server through the com.clt.apps.opus.esm.clv.newgen screen as a Java variable
+ * - Convert parsing information into Event, put it in request and request execution with newgenSC
+ * - Set EventResponse to request to send execution result from newgenSC to View (JSP)
  * @author Hai To
  * @see newgenEvent 참조
  * @since J2EE 1.6
@@ -42,8 +42,8 @@ public class DOU_TRN_0004HTMLAction extends HTMLActionSupport {
 	public DOU_TRN_0004HTMLAction() {}
 
 	/**
-	 * HTML DOM 객체의 Value를 자바 변수로 Parsing<br>
-	 * HttpRequst의 정보를 newgenEvent로 파싱하여 request에 셋팅<br>
+	 * Parsing HTML DOM object's Value into Java variable<br>
+	 * Parsing the information of HttpRequst as newgenEvent and setting it in the request<br>
 	 * @param request HttpServletRequest HttpRequest
 	 * @return Event Event interface를 구현한 객체
 	 * @exception HTMLActionException
@@ -69,7 +69,7 @@ public class DOU_TRN_0004HTMLAction extends HTMLActionSupport {
 		return  event;
 	}
 
-	/**
+	 /**
 	 * Saving the value of the task scenario execution result in the attribute of HttpRequest<br>
 	 * Setting the ResultSet that transmits the execution result from ServiceCommand to View (JSP) in the request<br>
 	 * @param request HttpServletRequest HttpRequest
@@ -79,9 +79,9 @@ public class DOU_TRN_0004HTMLAction extends HTMLActionSupport {
 		request.setAttribute("EventResponse", eventResponse);
 	}
 
-	/**
-	 * HttpRequest의 attribute에 HttpRequest 파싱 수행결과 값 저장<br>
-	 * HttpRequest 파싱 수행결과 값 request에 셋팅<br>
+	 /**
+	 * Save HttpRequest parsing result value in HttpRequest attribute<br>
+	 * HttpRequest parsing result value set in request<br>
 	 * 
 	 * @param request HttpServletRequest HttpRequest
 	 * @param event Event interface를 구현한 객체
