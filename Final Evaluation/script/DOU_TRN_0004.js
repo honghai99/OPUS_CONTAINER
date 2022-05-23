@@ -92,7 +92,11 @@
 	 *  @param {object} combo Object
 	 */
 	function setComboObject(combo_obj) {
-		comboObjects[0] = combo_obj;
+		//comboObjects[0] = combo_obj;
+		switch (combo_obj.element[0].id) {
+			case "s_jo_crr_cd":
+				comboObjects[0] = combo_obj;
+		}	
 		//comboObjects[comboCnt++] = combo_obj;
 	}
 	
