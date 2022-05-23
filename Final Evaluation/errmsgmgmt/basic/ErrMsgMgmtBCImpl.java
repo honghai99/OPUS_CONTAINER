@@ -92,15 +92,15 @@ public class ErrMsgMgmtBCImpl extends BasicCommandSupport implements ErrMsgMgmtB
 			}
 			
 			if ( insertVoList.size() > 0 ) {
-				dbDao.addmanageErrMsgVOS(insertVoList);
+				dbDao.addManageErrMsgVOS(insertVoList);
 			}
 			
 			if ( updateVoList.size() > 0 ) {
-				dbDao.modifymanageErrMsgVOS(updateVoList);
+				dbDao.modifyManageErrMsgVOS(updateVoList);
 			}
 			
 			if ( deleteVoList.size() > 0 ) {
-				dbDao.removemanageErrMsgVOS(deleteVoList);
+				dbDao.removeManageErrMsgVOS(deleteVoList);
 			}
 		} catch(DAOException ex) {
 			throw new EventException(new ErrorHandler(ex).getMessage(),ex);
@@ -146,6 +146,7 @@ public class ErrMsgMgmtBCImpl extends BasicCommandSupport implements ErrMsgMgmtB
 		}
 	}
 	
+
 	@Override
 	public List<ErrMsgVO> checkDuplicate(ErrMsgVO errMsgVO) throws EventException {
 		try {

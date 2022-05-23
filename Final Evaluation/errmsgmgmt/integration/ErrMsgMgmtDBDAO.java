@@ -42,8 +42,6 @@ import com.clt.framework.support.layer.integration.DBDAOSupport;
 public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 
 	/**
-	 * [처리대상] 정보를 [행위] 합니다.<br>
-	 * 
 	 * @param ErrMsgVO errMsgVO
 	 * @return List<ErrMsgVO>
 	 * @exception DAOException
@@ -88,8 +86,6 @@ public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 	}
 	
 	/**
-	 * [처리대상] 정보를 [행위] 합니다.<br>
-	 * 
 	 * @param ErrMsgVO errMsgVO
 	 * @exception DAOException
 	 * @exception Exception
@@ -119,7 +115,6 @@ public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 	}
 	
 	/**
-	 * [처리대상] 정보를 [행위] 합니다.<br>
 	 * 
 	 * @param ErrMsgVO errMsgVO
 	 * @return int
@@ -154,14 +149,13 @@ public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 	}
 	
 	/**
-	 * [처리대상] 정보를 [행위] 합니다.<br>
 	 * 
 	 * @param ErrMsgVO errMsgVO
 	 * @return int
 	 * @exception DAOException
 	 * @exception Exception
 	 */
-	public int removemanageErrMsgVO(ErrMsgVO errMsgVO) throws DAOException,Exception {
+	public int removeManageErrMsgVO(ErrMsgVO errMsgVO) throws DAOException,Exception {
 		//query parameter
 		Map<String, Object> param = new HashMap<String, Object>();
 		//velocity parameter
@@ -189,14 +183,13 @@ public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 	}
 
 	/**
-	 * [처리대상] 정보를 [행위] 합니다.<br>
 	 * 
 	 * @param List<ErrMsgVO> errMsgVO
 	 * @return int[]
 	 * @exception DAOException
 	 * @exception Exception
 	 */
-	public int[] addmanageErrMsgVOS(List<ErrMsgVO> errMsgVO) throws DAOException,Exception {
+	public int[] addManageErrMsgVOS(List<ErrMsgVO> errMsgVO) throws DAOException,Exception {
 		int insCnt[] = null;
 		try {
 			SQLExecuter sqlExe = new SQLExecuter("");
@@ -217,14 +210,13 @@ public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 		return insCnt;
 	}
 	/**
-	 * [처리대상] 정보를 [행위] 합니다.<br>
 	 * 
 	 * @param List<ErrMsgVO> errMsgVO
 	 * @return int[]
 	 * @exception DAOException
 	 * @exception Exception
 	 */
-	public int[] modifymanageErrMsgVOS(List<ErrMsgVO> errMsgVO) throws DAOException,Exception {
+	public int[] modifyManageErrMsgVOS(List<ErrMsgVO> errMsgVO) throws DAOException,Exception {
 		int updCnt[] = null;
 		try {
 			SQLExecuter sqlExe = new SQLExecuter("");
@@ -246,14 +238,13 @@ public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 	}
 	
 	/**
-	 * [처리대상] 정보를 [행위] 합니다.<br>
 	 * 
 	 * @param List<ErrMsgVO> errMsgVO
 	 * @return int[]
 	 * @exception DAOException
 	 * @exception Exception
 	 */
-	public int[] removemanageErrMsgVOS(List<ErrMsgVO> errMsgVO) throws DAOException,Exception {
+	public int[] removeManageErrMsgVOS(List<ErrMsgVO> errMsgVO) throws DAOException,Exception {
 		int delCnt[] = null;
 		try {
 			SQLExecuter sqlExe = new SQLExecuter("");
@@ -274,6 +265,13 @@ public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 		return delCnt;
 	}
 	
+	/**
+	 * 
+	 * @param errMsgVO
+	 * @return
+	 * @throws DAOException
+	 * @throws Exception
+	 */
 	public List<ErrMsgVO> searchCarrier(ErrMsgVO errMsgVO) throws DAOException,Exception {
 		DBRowSet dbRowset = null;
 		List<ErrMsgVO> list = new ArrayList<ErrMsgVO>();
@@ -300,6 +298,13 @@ public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 		return list;
 	}
 	
+	/**
+	 * 
+	 * @param errMsgVO
+	 * @return
+	 * @throws DAOException
+	 * @throws Exception
+	 */
 	public List<ErrMsgVO> searchLane(ErrMsgVO errMsgVO) throws DAOException,Exception {
 		DBRowSet dbRowset = null;
 		List<ErrMsgVO> list = new ArrayList<ErrMsgVO>();
@@ -326,6 +331,13 @@ public class ErrMsgMgmtDBDAO extends DBDAOSupport {
 		return list;
 	}
 	
+	/**
+	 * 
+	 * @param errMsgVO
+	 * @return
+	 * @throws DAOException
+	 * @throws Exception
+	 */
 	public List<ErrMsgVO> checkDuplicate(ErrMsgVO errMsgVO) throws DAOException,Exception {
 		DBRowSet dbRowset = null;
 		List<ErrMsgVO> list = new ArrayList<ErrMsgVO>();
