@@ -69,7 +69,7 @@ public class ErrMsgMgmtBCImpl extends BasicCommandSupport implements ErrMsgMgmtB
 			List<ErrMsgVO> insertVoList = new ArrayList<ErrMsgVO>();
 			List<ErrMsgVO> updateVoList = new ArrayList<ErrMsgVO>();
 			List<ErrMsgVO> deleteVoList = new ArrayList<ErrMsgVO>();
-					
+			
 			for ( int i=0; i<errMsgVO .length; i++ ) {
 				if ( errMsgVO[i].getIbflag().equals("I")){
 					if(checkDuplicate(errMsgVO[i]).size()>0) {
@@ -79,13 +79,15 @@ public class ErrMsgMgmtBCImpl extends BasicCommandSupport implements ErrMsgMgmtB
 						errMsgVO[i].setUpdUsrId(account.getUsr_id());
 						insertVoList.add(errMsgVO[i]);
 					}
-				} else if (errMsgVO[i].getIbflag().equals("U")){
-					if(checkDuplicate(errMsgVO[i]).size()>0) {
-						throw new EventException(new ErrorHandler("ERR99999").getMessage());
-					} else {
-						errMsgVO[i].setUpdUsrId(account.getUsr_id());
-						updateVoList.add(errMsgVO[i]);
-					}
+				} else if (errMsgVO[i].getIbflag().equals("U") ){					
+					for(int j=i+1; j <errMsgVO .length; j++) {
+						if(checkDuplicate(errMsgVO[i]).size()>0 && errMsgVO[i].getJoCrrCd().equals(errMsgVO[j].getJoCrrCd()) && errMsgVO[i].getRlaneCd().equals(errMsgVO[j].getRlaneCd())){
+							throw new EventException(new ErrorHandler("ERR99999").getMessage());
+						}
+					} 
+					errMsgVO[i].setUpdUsrId(account.getUsr_id());
+					updateVoList.add(errMsgVO[i]);
+					
 				} else if ( errMsgVO[i].getIbflag().equals("D")){
 					deleteVoList.add(errMsgVO[i]);
 				}
