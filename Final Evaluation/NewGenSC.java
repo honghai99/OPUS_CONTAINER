@@ -109,7 +109,7 @@ public class NewGenSC extends ServiceCommandSupport {
 	}
 	
 	/**
-	 * DOU_TRN_0004 
+	 * Use to manage the carrier such as: create, modify, or delete
 	 * @param Event e
 	 * @return EventResponse
 	 * @exception EventException
