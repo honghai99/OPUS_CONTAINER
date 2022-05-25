@@ -75,8 +75,7 @@ public class NewGenSC extends ServiceCommandSupport {
 		if (e.getEventName().equalsIgnoreCase("DouTrn0004Event")) {
 			if (e.getFormCommand().isCommand(FormCommand.SEARCH)) {
 				eventResponse = searchErrMsgVO(e);
-			}
-			else if (e.getFormCommand().isCommand(FormCommand.MULTI)) {
+			} else if (e.getFormCommand().isCommand(FormCommand.MULTI)) {
 				eventResponse = manageErrMsgVO(e);
 			} else if(e.getFormCommand().isCommand(FormCommand.DEFAULT)) {
 				eventResponse = initData(e);
@@ -110,6 +109,7 @@ public class NewGenSC extends ServiceCommandSupport {
 	
 	/**
 	 * Use to manage the carrier such as: create, modify, or delete
+	 *
 	 * @param Event e
 	 * @return EventResponse
 	 * @exception EventException
@@ -123,13 +123,14 @@ public class NewGenSC extends ServiceCommandSupport {
 			begin();
 			command.manageErrMsgVO(event.getErrMsgVOS(),account);
 			eventResponse.setUserMessage(new ErrorHandler("BKG06071").getUserMessage());
+			//chủ động message, check ErrorHandler. 
 			commit();
 		} catch(EventException ex) {
 			rollback();
-			throw new EventException(new ErrorHandler(ex).getMessage(),ex);
+			throw new EventException(new ErrorHandler("BKG06072").getMessage(),ex);
 		} catch(Exception ex) {
 			rollback();
-			throw new EventException(new ErrorHandler(ex).getMessage(),ex);
+			throw new EventException(new ErrorHandler("BKG06072").getMessage(),ex);
 		}
 		return eventResponse;
 	}
