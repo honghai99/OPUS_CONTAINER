@@ -79,16 +79,11 @@ public class ErrMsgMgmtBCImpl extends BasicCommandSupport implements ErrMsgMgmtB
 						errMsgVO[i].setUpdUsrId(account.getUsr_id());
 						insertVoList.add(errMsgVO[i]);
 					}
-				} else if (errMsgVO[i].getIbflag().equals("U") ){					
-					for(int j=i+1; j <errMsgVO .length; j++) {
-						if(checkDuplicate(errMsgVO[i]).size()>0 && errMsgVO[i].getJoCrrCd().equals(errMsgVO[j].getJoCrrCd()) && errMsgVO[i].getRlaneCd().equals(errMsgVO[j].getRlaneCd())){
-							throw new EventException(new ErrorHandler("ERR99999").getMessage());
-						}
-					} 
+				} else if (errMsgVO[i].getIbflag().equals("U")) {
 					errMsgVO[i].setUpdUsrId(account.getUsr_id());
 					updateVoList.add(errMsgVO[i]);
-					
-				} else if ( errMsgVO[i].getIbflag().equals("D")){
+
+				} else if (errMsgVO[i].getIbflag().equals("D")) {
 					deleteVoList.add(errMsgVO[i]);
 				}
 			}
@@ -150,6 +145,12 @@ public class ErrMsgMgmtBCImpl extends BasicCommandSupport implements ErrMsgMgmtB
 	
 
 	@Override
+	/**
+	 * Check duplicate when inserting new data
+	 * @param errMsgVO
+	 * @return List
+	 * @throws EventException
+	 */
 	public List<ErrMsgVO> checkDuplicate(ErrMsgVO errMsgVO) throws EventException {
 		try {
 			return dbDao.checkDuplicate(errMsgVO);
@@ -163,6 +164,3 @@ public class ErrMsgMgmtBCImpl extends BasicCommandSupport implements ErrMsgMgmtB
 	}
 	
 }
-
-
-	
