@@ -60,7 +60,7 @@ public class DOU_TRN_0003HTMLAction extends HTMLActionSupport {
 			searchVO.setJoCrrCd(JSPUtil.getParameter(request, "jo_crr_cd", ""));
 			searchVO.setRlaneCd(JSPUtil.getParameter(request, "rlane_cd", ""));
 			searchVO.setTrdCd(JSPUtil.getParameter(request, "trd_cd", ""));	
-			event.setErrMsgMstVOs(searchVO);
+//			event.setErrMsgMstVOs(searchVO);
 		} else if(command.isCommand(FormCommand.SEARCH01)) {
 			searchVO.setJoCrrCd(JSPUtil.getParameter(request, "jo_crr_cd", ""));
 			searchVO.setRlaneCd(JSPUtil.getParameter(request, "rlane_cd", ""));
@@ -73,15 +73,16 @@ public class DOU_TRN_0003HTMLAction extends HTMLActionSupport {
 			searchVO.setJoCrrCd(JSPUtil.getParameter(request, "jo_crr_cd", ""));
 			searchVO.setRlaneCd(JSPUtil.getParameter(request, "rlane_cd", ""));
 			searchVO.setTrdCd(JSPUtil.getParameter(request, "trd_cd", ""));	
-			event.setErrMsgMstVOs(searchVO);
+			
 		}
+		event.setErrMsgMstVOs(searchVO);
 		System.out.println(searchVO.getJoCrrCd());
 		System.out.println(searchVO.getToAcctYrmon());
 		System.out.println(searchVO.getFrAcctYrmon());
 		System.out.println(searchVO.getRlaneCd());
 		System.out.println(searchVO.getTrdCd());
 		
-		event.setErrMsgMstVOs(searchVO);
+//		event.setErrMsgMstVOs(searchVO);
 		//request.setAttribute("Event", event);
 		
 		return event;
