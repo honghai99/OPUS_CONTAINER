@@ -597,7 +597,8 @@
 	
 	function t1sheet1_OnDblClick(sheetObj, formObject, Row, Col) { 
 		var rows = Row;
-		tab1_OnChange(tabObjects[1] , 1);
+//		tab1_OnChange(tabObjects[1] , 1);
+		tab1.SetSelectedIndex(1);
 		sheetObjects[1].SetSelectRow(rows);
 //		doActionIBSheet(sheetObjects[1],formObject,IBSEARCH,1);
 //		sheetObjects[1].SetSelectRow(row);
