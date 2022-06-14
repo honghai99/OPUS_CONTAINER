@@ -1,0 +1,79 @@
+9. 	SELECT TO_CHAR('8988.80', '$9,999.999') FROM DUAL
+
+10. 	SELECT TO_CHAR(TRUNC(8988.80,-3), '$9,999.999') A FROM DUAL
+	SELECT TO_CHAR(TRUNC(820988.80,-3), '$999,999.999') A FROM DUAL
+
+12. 	Ngày hôm nay: SELECT TO_CHAR(SYSDATE, 'DD-MM-YYYY') FROM DUAL;
+	Ngày hôm qua: SELECT TO_CHAR(ADD_MONTHS(SYSDATE,-1), 'DD-MM-YYYY') FROM DUAL;
+	Ngày mai: SELECT TO_CHAR(ADD_MONTHS(SYSDATE,11), 'DD-MM-YYYY') FROM DUAL;
+
+13. 	select TO_CHAR(NVL2(ORD_DTTM,TO_NUMBER(ORD_DTTM), CONCAT('20191028','0001')))
+	from TB_ORD TB 
+	where ORD_DTTM like '20191028%' AND ROWNUM = 1 order by ORD_DTTM
+
+14. 	A) Viết câu SQL tìm CUST_GRP_ID sao cho: CUST_GRP_HRCHY_CD có I hoặc C nhưng không có G
+	SELECT * FROM MDM_CUSTOMER WHERE CUST_GRP_HRCHY_CD IN ('I', 'C')
+	B) Viết câu SQL tìm CUST_GRP_ID sao cho: CUST_GRP_HRCHY_CD có G và có I nhưng không có C
+	SELECT * FROM MDM_CUSTOMER WHERE CUST_GRP_HRCHY_CD IN ('I', 'G')
+
+15. 	1)	Lấy max(PROD_UNIT_AMT)
+	SELECT NVL(MAX(PROD_UNIT_AMT), 0) FROM TB_PROD 
+	2)	Lấy  giá trị min(PROD_UNIT_AMT)
+	SELECT NVL(MIN(PROD_UNIT_AMT), 0) FROM TB_PROD 
+	3)	Lấy giá trị trung bình PROD_UNIT_AMT
+	SELECT NVL(AVG(PROD_UNIT_AMT),0) FROM TB_PROD
+	4)	Lấy tên của sản phẩm có PROD_UNIT_AMT lớn nhất
+	SELECT A.PROD_NM
+	FROM
+  		(SELECT *
+       	 	FROM TB_PROD B 
+        	ORDER BY B.PROD_UNIT_AMT DESC nulls last ) A
+
+16. 	A) viết cấu SQL lấy ra top3 sản phẩm đc bán nhiều nhất.
+	SELECT C.* FROM (
+   	   	SELECT  COUNT(*) D
+  	    	FROM TB_ORD A
+  	    	GROUP BY A.PRO_CD
+  	    	ORDER BY D DESC
+  	        ) C
+	WHERE ROWNUM <=3  
+
+	B)	Viết cấu SQL lấy ra cái ORD_DT, ORD_TM, PROD_CD gần nhất theo CUST_NO
+	SELECT D.CUST_NO, D.ORD_NO, D.PRO_CD, D.ORD_DTTM
+	FROM (
+ 		SELECT TO_DATE(SUBSTR(A.ORD_DTTM,1,8), 'YYYY-MM-DD' ) AS B, A.CUST_NO, A.ORD_NO, A.PRO_CD, A.ORD_DTTM
+  		FROM TB_ORD A
+ 		ORDER BY B DESC ) D
+  	WHERE ROWNUM <=3
+
+	C)	Viết cấu SQL report xem trong tháng 06, 07, 08, 09 cảu 2019 sản phẩm có mã code là 00001bán đc bao nhiêu cái.
+	SELECT sum(TB.PRO_CD) total
+	, SUBSTR(TB.ORD_DTTM,1,6) as MON
+	, TB.PRO_CD
+	FROM TB_ORD TB
+	WHERE SUBSTR(TB.ORD_DTTM,1,6) BETWEEN '201906' AND '201909'
+	AND TB.PRO_CD='00001'
+	AND SUBSTR(TB.ORD_DTTM,1,6) IN ('201906', '201907', '201908', '201909')
+	group by TB.PRO_CD, SUBSTR(TB.ORD_DTTM,1,6)
+	order by TB.PRO_CD
+	
+	D) giả sư lúc đầu sản phẩn 00001 có 100 cái, viết report để tính số lương remain theo tháng 06, 07, 08, 09
+	 SELECT A.total, A.PRO_CD, A.MON, A.REMAIN FROM
+    	 (SELECT COUNT(TB.PRO_CD) AS total
+   	 , SUBSTR(TB.ORD_DTTM,1,6) as MON
+  	 , TB.PRO_CD
+  	 , 100 - COUNT(TB.PRO_CD) AS REMAIN
+  	 FROM TB_ORD TB
+  	 WHERE SUBSTR(TB.ORD_DTTM,1,6) BETWEEN '201906' AND '201909'
+   	 AND TB.PRO_CD='00001'
+   	 AND SUBSTR(TB.ORD_DTTM,1,6) IN ('201906', '201907', '201908', '201909')
+   	 group by TB.PRO_CD, SUBSTR(TB.ORD_DTTM,1,6) 
+  	 order by TB.PRO_CD) A 
+
+	
+
+
+
+
+
+
