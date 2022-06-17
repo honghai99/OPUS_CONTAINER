@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="ErrMsgMgmtDBDAOSearchRLaneCdRSQL">
+			<desc><![CDATA[get data for combo R.Lane Code]]></desc>
+			<sql><![CDATA[
+SELECT DISTINCT JST.RLANE_CD 
+FROM JOO_STL_TGT JST
+WHERE 1 = 1
+
+#if (${jo_crr_cd}!=''  && ${jo_crr_cd} != 'ALL')
+AND JST.JO_CRR_CD IN ( 
+#foreach($key IN ${jo_crr_cds})#if($velocityCount < $jo_crr_cds.size()) '$key', #else '$key' #end #end
+)
+#end
+ORDER BY JST.RLANE_CD			]]></sql>
+			<params>
+			</params>
+		</query>
+	</querys>
+</sqls>

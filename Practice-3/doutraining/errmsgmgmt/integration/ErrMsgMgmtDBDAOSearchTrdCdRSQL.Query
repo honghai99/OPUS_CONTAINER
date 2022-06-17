@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqls>
+	<querys>
+		<query name="JooCarrierMgmtDBDAOSearchTrdCdRSQL">
+			<desc><![CDATA[Search Trade Code]]></desc>
+			<sql><![CDATA[
+SELECT TRD_CD
+FROM JOO_CARRIER
+WHERE RLANE_CD = @[rlane_cd]
+#if (${jo_crr_cd} != 'All')
+AND JO_CRR_CD = @[jo_crr_cd] 
+#end			]]></sql>
+			<params>
+				<param name="rlane_cd" type="12" value="" out="N"/>
+				<param name="jo_crr_cd" type="12" value="" out="N"/>
+			</params>
+		</query>
+	</querys>
+</sqls>
