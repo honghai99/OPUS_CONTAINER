@@ -74,8 +74,8 @@
 
 <script language="javascript">
 	var partner = "All|<%=partner%>";
-	var rlaneCd = "All|<%=rlaneCd%>";
-	var trdCD 	= "All|<%=trdCd%>";
+	var rlaneCd = "|<%=rlaneCd%>";
+	var trdCD 	= "|<%=trdCd%>";
 	
 	
 	function setupPage(){
@@ -181,3 +181,4 @@
 
 <!-- 개발자 작업  끝 -->
 </form>
+

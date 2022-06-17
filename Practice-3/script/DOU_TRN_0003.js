@@ -61,7 +61,9 @@
    		var srcName=ComGetEvent("name");
            switch(srcName) {
 	       	    case "btn_Retrieve":
+	       	    	if(informTimeRange()) {	
 	   	            doActionIBSheet(sheetObject,formObject,IBSEARCH);
+	       	    	}
 	   	            //doActionIBSheet(sheetObjects[1],formObject,IBSEARCH);  	   
 	       	        break;
          
@@ -73,25 +75,8 @@
 					doActionIBSheet(sheetObject,formObject,	IBDOWNEXCEL);
 					break;
 				case "btn_DownExcel2": // down Excel
-					doActionIBSheet(sheetObject,formObject,	IBDOWNEXCEL);
-					break;
-//				case "btn_from_back":	
-//					var fromBack = document.getElementById('fr_acct_yrmon').value;
-//					editDate(fromBack, "backFrom");
-//					break;					
-//				case "btn_from_next":
-//					var fromBack = document.getElementById('fr_acct_yrmon').value;
-//					editDate(fromBack, "nextFrom");
-//					break;					
-//				case "btn_to_back":
-//					var toNext = document.getElementById('to_acct_yrmon').value;
-//					editDate(toNext, "backTo");
-//					break;				
-//				case "btn_to_next":
-//					var toNext = document.getElementById('to_acct_yrmon').value;
-//					editDate(toNext, "nextTo");
-//					break;
-					
+					doActionIBSheet(sheetObject,formObject,	IBDELETE);
+					break;				
 				case "btn_from_back":
 	                UF_addMonth(formObject.fr_acct_yrmon, -1);
 //	                sheetObject.RemoveAll();
@@ -183,8 +168,10 @@
 	    
 	    if (beforetab == 0) {
 	        ComFireEvent(ComGetObject("btn_Retrieve") ,"click");
+//	        doActionIBSheet(sheetObject,formObject,IBSEARCH);
 	    }else{
 	    	ComFireEvent(ComGetObject("btn_Retrieve") ,"click");
+//	    	doActionIBSheet(sheetObject,formObject,IBSEARCH);
 	    }
 	    
 	    resizeSheet();
@@ -287,7 +274,7 @@
 			comboObj.SetSelectIndex(0);
 			break;
 		case 2:
-			condition = " | All|" + condition;
+			condition = " | " + condition;
 			var laneComboObject = condition;
 			comboObj.RemoveAll();
 			with (comboObj) {
@@ -300,7 +287,7 @@
 			comboObj.SetSelectIndex(0);
 			break;
 		case 3:
-			condition = " | All|" + condition;
+			condition = " |" + condition;
 			var tradeComboObject = condition;
 			with (comboObj) {
 				SetMultiSelect(1);
@@ -615,6 +602,9 @@
 				sRow[i] -=1;
 			}
 			
+			const t0 = performance.now();
+			console.log(t0);
+			
 			const cur = [];
 			const tmpRow = [];
 			
@@ -626,7 +616,7 @@
 			
 			var eurRev = 0;		
 			var eurExp = 0;
-			sheetObj.DataInsert(-1);
+	
 			var rowVND =sheetObj.DataInsert(-1);
 			var rowUSD =sheetObj.DataInsert(-1);
 			var rowEUR =sheetObj.DataInsert(-1);
@@ -671,11 +661,11 @@
 	}
 	
 		
-	function doActionIBSheet(sheetObj,formObj,sAction) {
+	function doActionIBSheet(sheetObj, formObj, sAction) {
 		var sheetId = sheetObj.id;
 		switch (sAction) {
 			case IBSEARCH:      // retrieve	for summary
-				if(informTimeRange()) {				
+							
 					if(sheetId == "t1sheet1") {
 						formObj.f_cmd.value=SEARCH;
 						var arr1=new Array("t1sheet1_", "");
@@ -685,8 +675,7 @@
 	//	  				var sXml = sheetObj.GetSearchData("DOU_TRN_0003GS.do", sParam1);
 	//	  				sheetObj.LoadSearchData(sXml, {Sync:1});
 	//	  				ComOpenWait(false);	
-		  				var row = sheetObj.GetSelectRow();
-		  				sheetObj.SetSelectRow(row);
+	
 					} else if(sheetId == "t2sheet1") {		
 						formObj.f_cmd.value=SEARCH03;
 		  				var arr1=new Array("t2sheet1_", "");
@@ -696,10 +685,9 @@
 		  				var sXml = sheetObj.GetSearchData("DOU_TRN_0003GS.do", sParam1);
 		  				sheetObj.LoadSearchData(sXml, {Sync:1});
 		  				ComOpenWait(false);	
-		  				var row = sheetObj.GetSelectRow();
-		  				sheetObj.SetSelectRow(row);
+		
 					}
-				}
+				
   						 
 	            break;				
 			case IBRESET: 
@@ -710,87 +698,36 @@
 					ComShowCodeMessage("COM132501");
 				}else{
 					sheetObj.Down2Excel({DownCols: makeHiddenSkipCol(sheetObj), SheetDesign:1, Merge:1});
+//					let param = {
+//							URL:"/opuscntr/PRACTICE_0003_DETAILS.jsp"
+//							,ExtendedParam: FormQueryString(formObj)
+//							,FileName: "Details.xls"
+//							,DownCols: makeHiddenSkipCol(sheetObj)
+//							,Merge:1
+//							,SheetDesign:1
+//							,KeyFieldMark:0			
+//					}
+//					sheetObj.DirectDown2Excel(param);
 				}
 				break;
+			case IBDELETE:
+				with(formObj) {
+					f_cmd.value = SEARCH04;
+					target="_top";
+					fr_acct_yrmon.disabled = false;
+					to_acct_yrmon.disabled = false;			
+					action="DOU_TRN_0003DL.do?" + FormQueryString(formObj);
+					
+					submit();
+				
+				
+				}	
+				ComOpenWait(false);
+				break;			
 		}
 	}
 		
-			
-		
-		
-//	function editDate(fromBack, sAction) {
-//		if (sAction=="backFrom") {
-//			fromBack=fromBack.substring(0,fromBack.length).split("-");
-//			var monthBack = fromBack[1]
-//			monthBack = monthBack.valueOf(monthBack)-1;
-//			var zero = "0";
-//			if(monthBack==0) {
-//				monthBack = 12;
-//				yearBack = fromBack[0]
-//				yearBack = yearBack.valueOf(yearBack)-1;
-//						
-//				var check = document.getElementById("fr_acct_yrmon").value = yearBack + "-" +  "" + monthBack ;
-//			} else if(monthBack>=10 && monthBack<=12) {
-//				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
-//			} else if(monthBack>=1 && monthBack<=9) {
-//				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
-//			}					
-//		}
-//			
-//		if (sAction=="nextFrom") {
-//			fromBack=fromBack.substring(0,fromBack.length).split("-");
-//			var monthBack = fromBack[1]
-//			monthBack = parseInt(monthBack)+1;
-//			var zero = "0";
-//			if(monthBack==13) {
-//				monthBack = 1;
-//				yearBack = fromBack[0]
-//				yearBack = parseInt(yearBack)+1;
-//					
-//				var check = document.getElementById("fr_acct_yrmon").value = yearBack + "-" +  zero + monthBack ;
-//			} else if(monthBack>=10 && monthBack<=12) {
-//				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
-//			} else if(monthBack>=1 && monthBack<=9) {
-//				var check = document.getElementById("fr_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
-//			}					
-//		}
-//			
-//		if(sAction=="backTo") {
-//			fromBack=fromBack.substring(0,fromBack.length).split("-");
-//			var monthBack = fromBack[1]
-//			monthBack = monthBack.valueOf(monthBack)-1;
-//			var zero = "0";
-//			if(monthBack==0) {
-//				monthBack = 12;
-//				yearBack = fromBack[0]
-//				yearBack = yearBack.valueOf(yearBack)-1;
-//						
-//				var check = document.getElementById("to_acct_yrmon").value = yearBack + "-" +  "" + monthBack ;
-//			} else if(monthBack>=10 && monthBack<=12) {
-//				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
-//			} else if(monthBack>=1 && monthBack<=9) {
-//				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
-//			}
-//		} 
-//			
-//		if(sAction=="nextTo") {
-//			fromBack=fromBack.substring(0,fromBack.length).split("-");
-//			var monthBack = fromBack[1]
-//			monthBack = parseInt(monthBack)+1;
-//			var zero = "0";
-//			if(monthBack==13) {
-//				monthBack = 1;
-//				yearBack = fromBack[0]
-//				yearBack = parseInt(yearBack)+1;
-//					
-//				var check = document.getElementById("to_acct_yrmon").value = yearBack + "-" +  zero + monthBack ;
-//			} else if(monthBack>=10 && monthBack<=12) {
-//				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  "" + monthBack ;
-//			} else if(monthBack>=1 && monthBack<=9) {
-//				var check = document.getElementById("to_acct_yrmon").value = fromBack[0] + "-" +  zero + monthBack ;
-//			}
-//		}
-//	}
+
 	
 	
 
